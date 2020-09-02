@@ -1,0 +1,16 @@
+version: "3"
+services:
+    app:
+        image: "divlook/node:v1.0.2"
+        environment:
+            GIT_USER_NAME: "divlook"
+            GIT_USER_EMAIL: "uihyeon.cha@gmail.com"
+        container_name: "ticketing"
+        network_mode: "bridge"
+        ports:
+            - 9000:9000
+        volumes: [".:/app"]
+        working_dir: "/app"
+        stdin_open: true
+        tty: true
+        command: ["yarn && yarn dev"]

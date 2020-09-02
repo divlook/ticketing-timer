@@ -57,6 +57,7 @@ function devConfig() {
             rootDir('public'),
         ],
         port: 9000,
+        host: '0.0.0.0',
     }
 
     config.plugins.push(
