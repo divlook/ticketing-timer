@@ -1,19 +1,30 @@
 {
-    "name": "ticketing",
+    "name": "@divlook/ticketing",
     "version": "1.0.0",
-    "private": true,
+    "description": "티켓팅을 위한 모듈입니다.",
     "keywords": [
         "Ticketing",
         "SRT",
         "KTX"
     ],
+    "author": "uihyeon.cha <uihyeon@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/divlook/ticketing.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "bugs": {
+        "url": "https://github.com/divlook/ticketing/issues"
+    },
+    "homepage": "https://github.com/divlook/ticketing#readme",
+    "license": "MIT",
+    "main": "dist/ticketing.js",
     "scripts": {
         "dev": "webpack-dev-server --mode development",
         "build": "webpack --mode production"
     },
-    "repository": "https://github.com/divlook/ticketing.git",
-    "author": "uihyeon.cha <uihyeon@gmail.com>",
-    "license": "MIT",
     "devDependencies": {
         "@babel/core": "^7.11.5",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
