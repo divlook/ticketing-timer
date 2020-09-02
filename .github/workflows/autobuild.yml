@@ -1,0 +1,36 @@
+name: Auto Build
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - 'dist/**'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - 'dist/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js v12
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - uses: bahmutov/npm-install@v1
+      - name: Install
+        run: yarn install
+      - name: Build
+        run: yarn build --output-path dist
+      - name: Git Auto Commit
+        uses: stefanzweifel/git-auto-commit-action@v4.4.1
+        with:
+          commit_message: Auto Build
+          file_pattern: dist/*
+          commit_user_name: divlook
+          commit_user_email: uihyeon.cha@gmail.com
+          push_options: '--force'
