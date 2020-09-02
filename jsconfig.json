@@ -1,0 +1,15 @@
+{
+    "exclude": [
+        "node_modules/*",
+        "dist/*"
+    ],
+    "compilerOptions": {
+        "target": "es2018",
+        "baseUrl": "src",
+        "paths": {
+            "@/*": [
+                "./*"
+            ]
+        }
+    }
+}
