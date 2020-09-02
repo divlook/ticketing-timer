@@ -17,7 +17,7 @@ const config = {
     entry: rootDir('src/main.js'),
     output: {
         filename: 'main.js',
-        path: rootDir('dist'),
+        path: rootDir('build'),
     },
     module: {
         rules: [
@@ -28,13 +28,19 @@ const config = {
     optimization: {},
 }
 
-module.exports = function () {
+const options = {
+    outputPath: null,
+}
+
+module.exports = function (env, argv) {
+    options.outputPath = isNullish(argv['output-path'])
+
     if (isDevPhase) {
         return devConfig()
     }
 
     if (isBuildPhase) {
-        return buildConfig()
+        return buildConfig(options)
     }
 
     return config
@@ -47,7 +53,7 @@ function rootDir(...p) {
 function devConfig() {
     config.devServer = {
         contentBase: [
-            rootDir('dist'),
+            rootDir('build'),
             rootDir('public'),
         ],
         port: 9000,
@@ -63,8 +69,21 @@ function devConfig() {
     return config
 }
 
-function buildConfig() {
+function buildConfig(options) {
     config.plugins.push(new CleanWebpackPlugin())
     config.output.filename = 'ticketing.js'
+
+    if (options.outputPath) {
+        config.output.path = options.outputPath
+    }
+
     return config
+}
+
+function isNullish(value, then = null) {
+    if (value === null || value === undefined) {
+        return then
+    }
+
+    return value
 }
