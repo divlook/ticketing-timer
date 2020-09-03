@@ -8,19 +8,24 @@ function init() {
 
     console.log('Ticketing 모듈이 로드되었습니다.')
 
+    const main = document.querySelector('main')
+    const form = document.querySelector('form')
+
     const inputs = Array.from(document.querySelectorAll('input'))
     const date = inputs.find((el) => el.id === 'date')
     const time = inputs.find((el) => el.id === 'time')
-    const main = document.querySelector('main')
-    const form = document.querySelector('form')
+
+    const buttons = Array.from(document.querySelectorAll('button'))
+    const cancel = buttons.find((el) => el.id === 'cancel')
 
     const ticketing = new Ticketing(onComplete, {
         onLogging: onLogging,
     })
 
     preventSubmit()
-    onSubmit(start)
-    onReset(clearMain)
+    onSubmit(startTicketing)
+    onReset(resetTicketing)
+    onCancel(stopTicketing)
 
     function createArticle(text = '') {
         if (!text) {
@@ -58,7 +63,7 @@ function init() {
         })
     }
 
-    function start() {
+    function startTicketing() {
         clearMain()
 
         if (!date.value) {
@@ -79,6 +84,10 @@ function init() {
         ].join('')
 
         ticketing.start(datetime)
+    }
+
+    function stopTicketing() {
+        ticketing.stop()
     }
 
     function onComplete() {
@@ -110,9 +119,25 @@ function init() {
         }
     }
 
+    function onCancel(cb) {
+        if (typeof cb !== 'function') {
+            return
+        }
+
+        cancel.addEventListener('click', function() {
+            console.log('cancel')
+            cb()
+        })
+    }
+
     function clearMain() {
         while (main.firstChild) {
             main.removeChild(main.firstChild)
         }
+    }
+
+    function resetTicketing() {
+        stopTicketing()
+        clearMain()
     }
 }
