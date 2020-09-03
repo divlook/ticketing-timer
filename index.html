@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ticketing</title>
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            max-width: 1024px;
+            max-height: 720px;
+            overflow: hidden;
+        }
+
+        main {
+            overflow-y: auto;
+        }
+
+        article {
+            white-space: pre-line;
+        }
+    </style>
+
+<script src="ticketing.js"></script></head>
+<body>
+    <section>
+        <header>
+            <h3>테스트 페이지입니다</h3>
+            <p>날짜와 시간을 입력 후 테스트 해주세요</p>
+            <form id="form">
+                <p>
+                    <input type="date" value="" id="date">
+                    <input type="time" value="" id="time">
+                </p>
+                <p>
+                    <button type="reset" id="reset">초기화</button>
+                    <button type="submit" id="submit">실행</button>
+                </p>
+            </form>
+        </header>
+
+        <main></main>
+    </section>
+
+    <script src="example.js"></script>
+</body>
+</html>
