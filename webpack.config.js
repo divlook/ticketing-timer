@@ -2,6 +2,7 @@ const path = require('path')
 const { ProgressPlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const npmLifecycleEvent = process.env.npm_lifecycle_event
 const isDevPhase = npmLifecycleEvent === 'dev'
@@ -18,6 +19,7 @@ const config = {
     output: {
         filename: 'main.js',
         path: rootDir('build'),
+        publicPath: '',
     },
     module: {
         rules: [
@@ -30,13 +32,19 @@ const config = {
 
 const options = {
     outputPath: null,
+    publicPath: null,
 }
 
 module.exports = function (env, argv) {
     options.outputPath = isNullish(argv['output-path'])
+    options.publicPath = isNullish(argv['public-path'])
+
+    if (options.publicPath) {
+        config.output.publicPath = options.publicPath
+    }
 
     if (isDevPhase) {
-        return devConfig()
+        return devConfig(options)
     }
 
     if (isBuildPhase) {
@@ -55,6 +63,7 @@ function devConfig() {
         contentBase: [
             rootDir('build'),
             rootDir('public'),
+            //
         ],
         port: 9000,
         host: '0.0.0.0',
@@ -74,6 +83,7 @@ function buildConfig(options) {
     }
 
     useIndexHtml()
+    useCopyPlugin(options)
 
     return config
 }
@@ -87,11 +97,35 @@ function isNullish(value, then = null) {
 }
 
 function useIndexHtml() {
+    const publicPath = config.output.publicPath
+
     config.plugins.push(
         new HtmlWebpackPlugin({
             inject: 'head',
             template: rootDir('public/index.html'),
             minify: false,
+            templateParameters: {
+                publicPath,
+            },
+        })
+    )
+}
+
+function useCopyPlugin(options) {
+    const outputPath = options.outputPath || rootDir('build')
+
+    config.plugins.push(
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: rootDir('public/**/*'),
+                    to: outputPath,
+                    context: rootDir('public'),
+                    globOptions: {
+                        ignore: ['**/*.html'],
+                    },
+                },
+            ],
         })
     )
 }
