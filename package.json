@@ -1,37 +1,37 @@
 {
-    "name": "@divlook/ticketing",
-    "version": "1.0.0",
-    "description": "티켓팅을 위한 모듈입니다.",
-    "keywords": [
-        "Ticketing",
-        "SRT",
-        "KTX"
-    ],
-    "author": "uihyeon.cha <uihyeon@gmail.com>",
-    "private": true,
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/divlook/ticketing.git"
-    },
-    "bugs": {
-        "url": "https://github.com/divlook/ticketing/issues"
-    },
-    "homepage": "https://github.com/divlook/ticketing#readme",
-    "license": "MIT",
-    "main": "dist/ticketing.js",
-    "scripts": {
-        "dev": "webpack-dev-server --mode development",
-        "build": "webpack --mode production"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.11.5",
-        "@babel/plugin-proposal-class-properties": "^7.10.4",
-        "@babel/preset-env": "^7.11.5",
-        "babel-loader": "^8.1.0",
-        "clean-webpack-plugin": "^3.0.0",
-        "html-webpack-plugin": "^4.4.1",
-        "webpack": "^4.44.1",
-        "webpack-cli": "^3.3.12",
-        "webpack-dev-server": "^3.11.0"
-    }
+  "name": "@divlook/ticketing",
+  "version": "1.1.0",
+  "description": "티켓팅을 위한 모듈입니다.",
+  "keywords": [
+    "Ticketing",
+    "SRT",
+    "KTX"
+  ],
+  "author": "uihyeon.cha <uihyeon@gmail.com>",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/divlook/ticketing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/divlook/ticketing/issues"
+  },
+  "homepage": "https://github.com/divlook/ticketing#readme",
+  "license": "MIT",
+  "main": "dist/ticketing.js",
+  "scripts": {
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.5",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^4.4.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
 }
