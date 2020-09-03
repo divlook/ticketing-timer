@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/divlook/ticketing/compare/v1.2.0...v1.2.1) (2020-09-03)
+
+
+### Bug Fixes
+
+* Create Pages 액션 테스트 ([072e06e](https://github.com/divlook/ticketing/commit/072e06ef690e69828b8a3dcc125904d7f27a67d1))
+
+
+
 # [1.2.0](https://github.com/divlook/ticketing/compare/v1.1.0...v1.2.0) (2020-09-03)
 
 
