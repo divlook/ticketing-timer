@@ -48,6 +48,8 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.github_token }}
+          git-user-name: divlook
+          git-user-email: uihyeon.cha@gmail.com
 
       - name: Create Release
         uses: actions/create-release@v1
