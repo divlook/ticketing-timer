@@ -1,6 +1,6 @@
 # README
 
-![Auto Build](https://github.com/divlook/ticketing/workflows/Auto%20Build/badge.svg)
+![Auto Release](https://github.com/divlook/ticketing/workflows/Auto%20Release/badge.svg)
 
 티켓팅을 위한 모듈입니다.
 
