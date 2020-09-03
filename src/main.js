@@ -1,6 +1,7 @@
 import Ticketing from '@/ticketing'
 
-/**
- * Define Ticketing
- */
-window['Ticketing'] = Ticketing
+if (window) {
+    window['Ticketing'] = Ticketing
+}
+
+export default Ticketing
