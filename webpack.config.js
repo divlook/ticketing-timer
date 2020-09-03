@@ -79,11 +79,11 @@ function buildConfig(options) {
     config.output.filename = 'ticketing.js'
 
     if (options.outputPath) {
-        config.output.path = options.outputPath
+        config.output.path = rootDir(options.outputPath)
     }
 
     useIndexHtml()
-    useCopyPlugin(options)
+    useCopyPlugin()
 
     return config
 }
@@ -111,16 +111,13 @@ function useIndexHtml() {
     )
 }
 
-function useCopyPlugin(options) {
-    const outputPath = options.outputPath || rootDir('build')
-
+function useCopyPlugin() {
     config.plugins.push(
         new CopyPlugin({
             patterns: [
                 {
                     from: rootDir('public/**/*'),
-                    to: outputPath,
-                    context: rootDir('public'),
+                    context: 'public/',
                     globOptions: {
                         ignore: ['**/*.html'],
                     },
