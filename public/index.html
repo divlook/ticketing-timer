@@ -5,38 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Ticketing</title>
-
-    <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        section {
-            display: flex;
-            flex-direction: column;
-            max-width: 1024px;
-            max-height: 720px;
-            overflow: hidden;
-        }
-
-        main {
-            overflow-y: auto;
-        }
-
-        article {
-            white-space: pre-line;
-        }
-    </style>
+    <link rel="stylesheet" href="<%= publicPath %>style.css">
 
 </head>
 <body>
@@ -59,6 +28,6 @@
         <main></main>
     </section>
 
-    <script src="example.js"></script>
+    <script src="<%= publicPath %>example.js"></script>
 </body>
 </html>
