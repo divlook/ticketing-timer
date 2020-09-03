@@ -60,12 +60,7 @@ function devConfig() {
         host: '0.0.0.0',
     }
 
-    config.plugins.push(
-        new HtmlWebpackPlugin({
-            inject: 'head',
-            template: rootDir('public/index.html'),
-        })
-    )
+    useIndexHtml()
 
     return config
 }
@@ -78,6 +73,8 @@ function buildConfig(options) {
         config.output.path = options.outputPath
     }
 
+    useIndexHtml()
+
     return config
 }
 
@@ -87,4 +84,14 @@ function isNullish(value, then = null) {
     }
 
     return value
+}
+
+function useIndexHtml() {
+    config.plugins.push(
+        new HtmlWebpackPlugin({
+            inject: 'head',
+            template: rootDir('public/index.html'),
+            minify: false,
+        })
+    )
 }

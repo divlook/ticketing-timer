@@ -1,0 +1,25 @@
+name: Create Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dist/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: divlook
+          user_email: uihyeon.cha@gmail.com
+          publish_dir: dist
