@@ -6,7 +6,7 @@ import { timestamp } from '@/utils'
  */
 
 /**
- * console.log
+ * Logger
  */
 const log = logger()
 log.clear = true
@@ -82,26 +82,27 @@ class Ticketing {
         })
 
         this.#callbackMap.set('ktx', () => {
-            if (
-                typeof window?.['NetFunnel']?.['NetFunnel_goAliveNotice'] !==
-                'function'
-            ) {
-                log(
-                    'NetFunnel.NetFunnel_goAliveNotice 메서드가 존재하지 않습니다.'
-                )
+            const NetFunnel = window?.NetFunnel
+            const NetFunnel_goAliveNotice = NetFunnel?.NetFunnel_goAliveNotice
+
+            if (typeof NetFunnel_goAliveNotice !== 'function') {
+                // prettier-ignore
+                this.log('NetFunnel.NetFunnel_goAliveNotice 메서드가 존재하지 않습니다.')
                 return
             }
 
-            window['NetFunnel']['NetFunnel_goAliveNotice'](1)
+            NetFunnel_goAliveNotice(1)
         })
 
         this.#callbackMap.set('srt', () => {
-            if (typeof window?.['goPage'] !== 'function') {
-                log('goPage 메서드가 존재하지 않습니다.')
+            const goPage = window?.goPage
+
+            if (typeof goPage !== 'function') {
+                this.log('goPage 메서드가 존재하지 않습니다.')
                 return
             }
 
-            window['goPage'](1)
+            goPage(1)
         })
     }
 
