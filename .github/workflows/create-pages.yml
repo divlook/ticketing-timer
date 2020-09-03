@@ -1,14 +1,11 @@
 name: Create Pages
 
 on:
-  push:
+  workflow_run:
+    workflows: ['Auto Release']
     branches: [main]
-    paths:
-      - 'dist/**'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'dist/**'
+    types:
+      - completed
 
 jobs:
   publish:
