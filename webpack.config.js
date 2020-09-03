@@ -19,6 +19,7 @@ const config = {
     output: {
         filename: 'main.js',
         path: rootDir('build'),
+        publicPath: '',
     },
     module: {
         rules: [
@@ -31,13 +32,19 @@ const config = {
 
 const options = {
     outputPath: null,
+    publicPath: null,
 }
 
 module.exports = function (env, argv) {
     options.outputPath = isNullish(argv['output-path'])
+    options.publicPath = isNullish(argv['public-path'])
+
+    if (options.publicPath) {
+        config.output.publicPath = options.publicPath
+    }
 
     if (isDevPhase) {
-        return devConfig()
+        return devConfig(options)
     }
 
     if (isBuildPhase) {
@@ -90,11 +97,16 @@ function isNullish(value, then = null) {
 }
 
 function useIndexHtml() {
+    const publicPath = config.output.publicPath
+
     config.plugins.push(
         new HtmlWebpackPlugin({
             inject: 'head',
             template: rootDir('public/index.html'),
             minify: false,
+            templateParameters: {
+                publicPath,
+            },
         })
     )
 }
