@@ -8,12 +8,10 @@
         "KTX"
     ],
     "author": "uihyeon.cha <uihyeon@gmail.com>",
+    "private": true,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/divlook/ticketing.git"
-    },
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
+        "url": "https://github.com/divlook/ticketing.git"
     },
     "bugs": {
         "url": "https://github.com/divlook/ticketing/issues"
