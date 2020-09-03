@@ -6,10 +6,17 @@ import { timestamp } from '@/utils'
  */
 
 /**
- * console.log
+ * Logger
  */
 const log = logger()
 log.clear = true
+
+/**
+ * Ticketing Options
+ */
+export const ticketingOptions = {
+    onLogging: () => {},
+}
 
 /**
  * Ticketing
@@ -26,13 +33,17 @@ class Ticketing {
      * @type { Map<TicketingType, () => void> }
      */
     #callbackMap = new Map()
+    #options = { ...ticketingOptions }
+    #log = log
 
     /**
      * @param { TicketingType | (() => void) } typeOrCallback
      * 타이머 종료 후 실행할 `callback` 또는 `type`. `type` 입력시 해당 `callback` 실행
+     * @param { ticketingOptions } [options]
      */
-    constructor(typeOrCallback) {
+    constructor(typeOrCallback, options = {}) {
         this.init()
+        this.setOptions(options)
 
         if (typeof typeOrCallback === 'function') {
             this.#callback = typeOrCallback
@@ -44,7 +55,7 @@ class Ticketing {
             return
         }
 
-        log.notice = 'callback이 없습니다.'
+        this.log.notice = 'callback이 없습니다.'
     }
 
     /**
@@ -56,7 +67,7 @@ class Ticketing {
         this.stop()
 
         if (!datetime) {
-            log('날짜 및 시간을 입력해주세요.')
+            this.log('날짜 및 시간을 입력해주세요.')
             return
         }
 
@@ -82,27 +93,38 @@ class Ticketing {
         })
 
         this.#callbackMap.set('ktx', () => {
-            if (
-                typeof window?.['NetFunnel']?.['NetFunnel_goAliveNotice'] !==
-                'function'
-            ) {
-                log(
-                    'NetFunnel.NetFunnel_goAliveNotice 메서드가 존재하지 않습니다.'
-                )
+            const NetFunnel = window?.NetFunnel
+            const NetFunnel_goAliveNotice = NetFunnel?.NetFunnel_goAliveNotice
+
+            if (typeof NetFunnel_goAliveNotice !== 'function') {
+                // prettier-ignore
+                this.log('NetFunnel.NetFunnel_goAliveNotice 메서드가 존재하지 않습니다.')
                 return
             }
 
-            window['NetFunnel']['NetFunnel_goAliveNotice'](1)
+            NetFunnel_goAliveNotice(1)
         })
 
         this.#callbackMap.set('srt', () => {
-            if (typeof window?.['goPage'] !== 'function') {
-                log('goPage 메서드가 존재하지 않습니다.')
+            const goPage = window?.goPage
+
+            if (typeof goPage !== 'function') {
+                this.log('goPage 메서드가 존재하지 않습니다.')
                 return
             }
 
-            window['goPage'](1)
+            goPage(1)
         })
+    }
+
+    /**
+     * 옵션 설정
+     * @param { ticketingOptions } [options]
+     */
+    setOptions(options = {}) {
+        if (Object.keys(options).length) {
+            Object.assign(this.#options, options)
+        }
     }
 
     /**
@@ -125,7 +147,7 @@ class Ticketing {
             m = Math.floor(s / 60)
             s = s % 60
         }
-        log(timestamp`${m}:${s}:${ms}`)
+        this.log(timestamp`${m}:${s}:${ms}`)
     }
 
     complete() {
@@ -136,7 +158,14 @@ class Ticketing {
             return
         }
 
-        log('종료되었습니다.')
+        this.log('종료되었습니다.')
+    }
+    log(...msgs) {
+        this.#log(...msgs)
+
+        if (this.#options?.onLogging) {
+            this.#options.onLogging(...msgs)
+        }
     }
 }
 

@@ -36,7 +36,7 @@
 ## Docs
 
 ```js
-new Ticketing(typeOrCallback)
+new Ticketing(typeOrCallback[, ticketingOptions])
 ```
 
 ### 예제
@@ -64,6 +64,7 @@ ticketing.start('2020-09-08 07:00:00') // 날짜 입력
 | TicketingType | 'ktx' \| 'srt' | 제공되는 티켓팅 사이트의 `type` |
 | Callback | () => void | |
 | typeOrCallback | TicketingType \| Callback | |
+| ticketingOptions | object | [옵션](#옵션) 참고 |
 | datetime | string | YYYY-MM-DD HH:mm:ss (ex '2020-09-08 07:00:00') |
 
 ### Methods
@@ -82,4 +83,16 @@ ticketing.start(datetime)
 
 ```js
 ticketing.stop()
+```
+
+### 옵션
+
+#### onLogging
+
+```js
+new Ticketing(typeOrCallback, {
+    onLogging: function(...msg) {
+        console.log('onLogging : ', ...msg)
+    },
+})
 ```
