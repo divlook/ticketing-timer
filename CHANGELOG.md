@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/divlook/ticketing/compare/v1.1.0...v1.2.0) (2020-09-03)
+
+
+### Features
+
+* :rocket: build할 때 index.html 생성 ([c1dbbe0](https://github.com/divlook/ticketing/commit/c1dbbe0d6acfcddcbdaeb36849ac72c76db6d51e))
+
+
+
 # [1.1.0](https://github.com/divlook/ticketing/compare/v1.0.0...v1.1.0) (2020-09-03)
 
 
