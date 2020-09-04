@@ -1,3 +1,5 @@
+'use strict'
+
 const path = require('path')
 const { ProgressPlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -7,6 +9,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 const npmLifecycleEvent = process.env.npm_lifecycle_event
 const isDevPhase = npmLifecycleEvent === 'dev'
 const isBuildPhase = npmLifecycleEvent === 'build'
+const buildKey = Date.now().toString(16)
 
 const config = {
     stats: 'minimal',
@@ -15,9 +18,12 @@ const config = {
             '@': rootDir('src'),
         },
     },
-    entry: rootDir('src/main.js'),
+    entry: {
+        app: rootDir('src/app.js'),
+        main: rootDir('src/main.js'),
+    },
     output: {
-        filename: 'main.js',
+        filename: '[name].js',
         path: rootDir('build'),
         publicPath: '',
     },
@@ -59,16 +65,7 @@ function rootDir(...p) {
 }
 
 function devConfig() {
-    config.devServer = {
-        contentBase: [
-            rootDir('build'),
-            rootDir('public'),
-            //
-        ],
-        port: 9000,
-        host: '0.0.0.0',
-    }
-
+    useDevServer()
     useIndexHtml()
 
     return config
@@ -76,7 +73,13 @@ function devConfig() {
 
 function buildConfig(options) {
     config.plugins.push(new CleanWebpackPlugin())
-    config.output.filename = 'ticketing-timer.js'
+    config.output.filename = (pathData) => {
+        if (pathData.chunk.name === 'main') {
+            return 'ticketing-timer.js'
+        }
+
+        return '[name].js'
+    }
 
     if (options.outputPath) {
         config.output.path = rootDir(options.outputPath)
@@ -98,15 +101,22 @@ function isNullish(value, then = null) {
 
 function useIndexHtml() {
     const publicPath = config.output.publicPath
+    const title = 'Ticketing Timer'
 
     config.plugins.push(
         new HtmlWebpackPlugin({
+            title,
             inject: 'head',
-            template: rootDir('public/index.html'),
+            template: rootDir('public/index.ejs'),
             minify: false,
             templateParameters: {
+                title,
                 publicPath,
+                buildKey,
             },
+            chunks: ['main', 'app'],
+            chunksSortMode: 'manual',
+            hash: true,
         })
     )
 }
@@ -119,10 +129,23 @@ function useCopyPlugin() {
                     from: rootDir('public/**/*'),
                     context: 'public/',
                     globOptions: {
-                        ignore: ['**/*.html'],
+                        ignore: ['**/*.html', '**/*.ejs'],
                     },
                 },
             ],
         })
     )
+}
+
+function useDevServer() {
+    config.devServer = {
+        contentBase: [
+            rootDir('build'),
+            rootDir('public'),
+            //
+        ],
+        port: 9000,
+        host: '0.0.0.0',
+        hot: true,
+    }
 }

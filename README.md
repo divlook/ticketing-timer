@@ -3,7 +3,7 @@
 ![Auto Release](https://github.com/divlook/ticketing-timer/workflows/Auto%20Release/badge.svg)
 ![Create Pages](https://github.com/divlook/ticketing-timer/workflows/Create%20Pages/badge.svg)
 
-티켓팅을 위한 모듈입니다.
+티켓팅(KTX, SRT, 기타)을 위한 프로젝트입니다.
 
 ## 지원 사이트
 
@@ -19,6 +19,8 @@
 
 ## 사용 방법
 
+### Chrome Console
+
 1. Chrome 브라우저 실행. (또는 IE를 제외한 최신 버전의 브라우저)
 2. 티켓팅 사이트 접속.
 3. 개발자 도구 실행
@@ -27,6 +29,10 @@
 4. [소스](./dist/ticketing-timer.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
 5. [예제](#예제) 소스를 복사하여 Console 탭에 붙여넣기
 6. `type`과 `datetime` 수정 후 `Enter`
+
+### Chrome 확장 프로그램
+
+> 지원 예정
 
 ## 주의 사항
 

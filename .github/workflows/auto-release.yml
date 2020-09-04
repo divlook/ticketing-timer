@@ -42,6 +42,7 @@ jobs:
           commit_user_name: divlook
           commit_user_email: uihyeon.cha@gmail.com
           push_options: '--force'
+          skip_dirty_check: true
 
   release:
     needs: build
