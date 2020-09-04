@@ -1,10 +1,17 @@
 {
     "exclude": [
-        "node_modules/*",
-        "dist/*"
+        "node_modules/**/*",
+        "dist/**/*",
+        "build/**/*"
+    ],
+    "include": [
+        "src/**/*"
     ],
     "compilerOptions": {
         "target": "es2018",
+        "module": "es6",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "baseUrl": "src",
         "paths": {
             "@/*": [
