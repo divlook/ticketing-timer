@@ -1,3 +1,4 @@
+import moment from 'moment'
 import {
     getConsoleSection,
     getForm,
@@ -27,6 +28,7 @@ function init() {
     onSubmit(form, startTicketing)
     onReset(form, resetTicketing)
     onClick(button.cancel, stopTicketing)
+    setInitialValue()
 
     function startTicketing() {
         consoleSection.clear()
@@ -60,6 +62,9 @@ function init() {
     function resetTicketing() {
         stopTicketing()
         consoleSection.clear()
+        setTimeout(() => {
+            setInitialValue()
+        })
     }
 
     function onLogging(...msgs) {
@@ -82,5 +87,11 @@ function init() {
             consoleSection.clear()
             consoleSection.add(article)
         })
+    }
+
+    function setInitialValue() {
+        const now = moment().add(3, 'minute')
+        input.date.value = now.format('YYYY-MM-DD')
+        input.time.value = now.format('HH:mm')
     }
 }
