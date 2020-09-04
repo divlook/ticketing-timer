@@ -1,6 +1,7 @@
 import moment from 'moment'
 import logger from '@/utils/logger'
 import { timestamp } from '@/utils'
+import * as callbacks from '@/callbacks'
 
 /**
  * @typedef { 'ktx' | 'srt' } TicketingType
@@ -93,28 +94,14 @@ class TicketingTimer {
             }
         })
 
-        this.#callbackMap.set('ktx', () => {
-            const NetFunnel = window?.NetFunnel
-            const NetFunnel_goAliveNotice = NetFunnel?.NetFunnel_goAliveNotice
+        Object.keys(callbacks).forEach((key) => {
+            this.#callbackMap.set(key, () => {
+                const errMsg = callbacks[key]
 
-            if (typeof NetFunnel_goAliveNotice !== 'function') {
-                // prettier-ignore
-                this.log('NetFunnel.NetFunnel_goAliveNotice 메서드가 존재하지 않습니다.')
-                return
-            }
-
-            NetFunnel_goAliveNotice(1)
-        })
-
-        this.#callbackMap.set('srt', () => {
-            const goPage = window?.goPage
-
-            if (typeof goPage !== 'function') {
-                this.log('goPage 메서드가 존재하지 않습니다.')
-                return
-            }
-
-            goPage(1)
+                if (errMsg) {
+                    this.log(errMsg)
+                }
+            })
         })
     }
 
