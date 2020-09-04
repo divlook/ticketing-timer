@@ -15,7 +15,7 @@ log.clear = true
  * TicketingTimer Options
  */
 export const ticketingOptions = {
-    onLogging: () => {},
+    onLogging: null,
 }
 
 /**
@@ -161,11 +161,14 @@ class TicketingTimer {
         this.log('종료되었습니다.')
     }
     log(...msgs) {
-        this.#log(...msgs)
+        const onLogging = this.#options?.onLogging
 
-        if (this.#options?.onLogging) {
+        if (typeof onLogging === 'function') {
             this.#options.onLogging(...msgs)
+            return
         }
+
+        this.#log(...msgs)
     }
 }
 
