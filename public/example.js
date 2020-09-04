@@ -125,7 +125,6 @@ function init() {
         }
 
         cancel.addEventListener('click', function() {
-            console.log('cancel')
             cb()
         })
     }
