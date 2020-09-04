@@ -1,3 +1,5 @@
+'use strict'
+
 const path = require('path')
 const { ProgressPlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
