@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Ticketing Timer</title>
-    <link rel="stylesheet" href="<%= publicPath %>style.css">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="<%= publicPath %>style.css?<%= buildKey %>">
 
 </head>
 <body>
     <main>
         <header>
-            <h3>테스트 페이지입니다</h3>
+            <h3><%= title %></h3>
             <p>날짜와 시간을 입력 후 테스트 해주세요</p>
             <form id="form">
                 <p>
@@ -28,7 +28,5 @@
 
         <section class="console"></section>
     </main>
-
-    <script src="<%= publicPath %>example.js"></script>
 </body>
 </html>

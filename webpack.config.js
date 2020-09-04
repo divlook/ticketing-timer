@@ -7,6 +7,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 const npmLifecycleEvent = process.env.npm_lifecycle_event
 const isDevPhase = npmLifecycleEvent === 'dev'
 const isBuildPhase = npmLifecycleEvent === 'build'
+const buildKey = Date.now().toString(16)
 
 const config = {
     stats: 'minimal',
@@ -98,15 +99,22 @@ function isNullish(value, then = null) {
 
 function useIndexHtml() {
     const publicPath = config.output.publicPath
+    const title = 'Ticketing Timer'
 
     config.plugins.push(
         new HtmlWebpackPlugin({
+            title,
             inject: 'head',
-            template: rootDir('public/index.html'),
+            template: rootDir('public/index.ejs'),
             minify: false,
             templateParameters: {
+                title,
                 publicPath,
+                buildKey,
             },
+            chunks: ['main', 'app'],
+            chunksSortMode: 'manual',
+            hash: true,
         })
     )
 }
@@ -119,7 +127,7 @@ function useCopyPlugin() {
                     from: rootDir('public/**/*'),
                     context: 'public/',
                     globOptions: {
-                        ignore: ['**/*.html'],
+                        ignore: ['**/*.html', '**/*.ejs'],
                     },
                 },
             ],
