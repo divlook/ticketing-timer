@@ -8,7 +8,7 @@ function init() {
 
     console.log('TicketingTimer 모듈이 로드되었습니다.')
 
-    const main = document.querySelector('main')
+    const consoleSection = document.querySelector('section.console')
     const form = document.querySelector('form')
 
     const inputs = Array.from(document.querySelectorAll('input'))
@@ -67,12 +67,12 @@ function init() {
         clearMain()
 
         if (!date.value) {
-            main.appendChild(createArticle('날짜를 입력해주세요.'))
+            consoleSection.appendChild(createArticle('날짜를 입력해주세요.'))
             return
         }
 
         if (!time.value) {
-            main.appendChild(createArticle('날짜를 입력해주세요.'))
+            consoleSection.appendChild(createArticle('날짜를 입력해주세요.'))
             return
         }
 
@@ -93,7 +93,7 @@ function init() {
     function onComplete() {
         clearMain()
         console.log('타이머 종료!')
-        main.appendChild(createArticle('타이머 종료!'))
+        consoleSection.appendChild(createArticle('타이머 종료!'))
     }
 
     function onLogging(...msgs) {
@@ -115,7 +115,7 @@ function init() {
 
         if (article) {
             clearMain()
-            main.appendChild(article)
+            consoleSection.appendChild(article)
         }
     }
 
@@ -130,8 +130,8 @@ function init() {
     }
 
     function clearMain() {
-        while (main.firstChild) {
-            main.removeChild(main.firstChild)
+        while (consoleSection.firstChild) {
+            consoleSection.removeChild(consoleSection.firstChild)
         }
     }
 
