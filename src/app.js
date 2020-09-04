@@ -1,37 +1,45 @@
 import moment from 'moment'
+import TicketingTimer from '@/ticketing-timer'
 import {
     getConsoleSection,
     getForm,
     getButtons,
     getInputs,
+    getSelects,
     createArticle,
 } from '@/utils/dom'
-import { onSubmit, onReset, onClick } from '@/utils/dom.event'
+import { onSubmit, onReset, onClick, onChange } from '@/utils/dom.event'
 
 document.addEventListener('DOMContentLoaded', init)
 
 function init() {
-    if (typeof window.TicketingTimer === 'undefined') {
-        console.error('TicketingTimer 모듈이 선언되지 않았습니다.')
-        return
-    }
-
-    console.log('TicketingTimer 모듈이 로드되었습니다.')
-
     const consoleSection = getConsoleSection()
     const form = getForm()
     const input = getInputs()
     const button = getButtons()
+    const select = getSelects()
 
-    const timer = new TicketingTimer(completeTicketing, { onLogging })
+    /**
+     * @type {TicketingTimer}
+     */
+    let timer
 
     onSubmit(form, startTicketing)
     onReset(form, resetTicketing)
     onClick(button.cancel, stopTicketing)
+    onChange(select.ticketingType, (e) => {
+        if (e.target.value) {
+            consoleSection.add(createArticle(e.target.value))
+        }
+    })
     setInitialValue()
 
     function startTicketing() {
         consoleSection.clear()
+
+        const ticketingType = select.ticketingType.value
+        const isCustom = ticketingType === 'custom'
+        const typeOrCallback = isCustom ? completeTicketing : ticketingType
 
         if (!input.date.value) {
             consoleSection.add(createArticle('날짜를 입력해주세요.'))
@@ -45,11 +53,12 @@ function init() {
 
         const datetime = [input.date.value, ' ', input.time.value].join('')
 
-        timer.start(datetime)
+        timer = new TicketingTimer(typeOrCallback, { onLogging })
+        timer && timer.start(datetime)
     }
 
     function stopTicketing() {
-        timer.stop()
+        timer && timer.stop()
     }
 
     function completeTicketing() {

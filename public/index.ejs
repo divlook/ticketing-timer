@@ -19,6 +19,16 @@
                     <input type="time" id="time" step="1">
                 </p>
                 <p>
+                    <select id="ticketing-type">
+                        <option value="ktx">KTX</option>
+                        <option value="srt">SRT</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </p>
+                <p id="editor">
+                    <textarea rows="10"></textarea>
+                </p>
+                <p class="text-right">
                     <button type="reset" id="reset">초기화</button>
                     <button type="button" id="cancel">취소</button>
                     <button type="submit" id="submit">실행</button>

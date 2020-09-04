@@ -44,3 +44,13 @@ export function onReset(el, cb, option) {
 export function onClick(el, cb, option) {
     useEventListener(el, 'click', cb, option)
 }
+
+/**
+ * On Change
+ * @param { HTMLElement } el
+ * @param { (e: Event) => void } cb
+ * @param { any } [option]
+ */
+export function onChange(el, cb, option) {
+    useEventListener(el, 'change', cb, option)
+}

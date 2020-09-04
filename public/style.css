@@ -22,8 +22,33 @@ main {
 
 section.console {
     overflow-y: auto;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    padding: 4px;
+}
+
+section.console:empty {
+    display: none;
 }
 
 article {
     white-space: pre-line;
+}
+
+.text-right {
+    text-align: right;
+}
+
+#editor {
+    border: 1px solid #eee;
+    display: flex;
+}
+
+#editor textarea {
+    flex: 1;
+    padding: 4px;
+    margin: 0;
+    border: 0;
+    min-height: 100px;
+    max-height: 300px;
 }
