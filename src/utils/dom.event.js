@@ -54,3 +54,13 @@ export function onClick(el, cb, option) {
 export function onChange(el, cb, option) {
     useEventListener(el, 'change', cb, option)
 }
+
+/**
+ * On Input
+ * @param { HTMLInputElement | HTMLTextAreaElement } el
+ * @param { (e: Event) => void } cb
+ * @param { any } [option]
+ */
+export function onInput(el, cb, option) {
+    useEventListener(el, 'input', cb, option)
+}

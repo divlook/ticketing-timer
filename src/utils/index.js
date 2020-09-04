@@ -17,3 +17,16 @@ export function timestamp(texts, ...args) {
         return text
     }).join('')
 }
+
+/**
+ * Create Code
+ *
+ * @param { string } code
+ * @returns { (context) => void }
+ * @example
+ * var runCode = createCode('console.log(context)')
+ * runCode('hi')
+ */
+export function createCode(code) {
+    return Function(`'use strict';function runCode(context) {${code}};return runCode;`)()
+}

@@ -84,3 +84,13 @@ export function getSelects() {
         ticketingType: map.get('ticketing-type'),
     }
 }
+
+export function getTextareas() {
+    const list = Array.from(document.querySelectorAll('textarea'))
+    const map = new Map(list.map((el) => [el.id, el]))
+
+    return {
+        list,
+        editor: map.get('editor'),
+    }
+}

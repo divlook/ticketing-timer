@@ -14,19 +14,19 @@
             <h3><%= title %></h3>
             <p>날짜와 시간을 입력 해주세요</p>
             <form id="form">
-                <p>
+                <p class="input-container">
                     <input type="date" id="date">
                     <input type="time" id="time" step="1">
                 </p>
                 <p>
                     <select id="ticketing-type">
+                        <option value="custom">Custom</option>
                         <option value="ktx">KTX</option>
                         <option value="srt">SRT</option>
-                        <option value="custom">Custom</option>
                     </select>
                 </p>
-                <p id="editor">
-                    <textarea rows="10"></textarea>
+                <p class="editor-container">
+                    <textarea rows="10" id="editor"></textarea>
                 </p>
                 <p class="text-right">
                     <button type="reset" id="reset">초기화</button>

@@ -3,6 +3,8 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -39,12 +41,18 @@ article {
     text-align: right;
 }
 
-#editor {
+.input-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.editor-container {
     border: 1px solid #eee;
     display: flex;
 }
 
-#editor textarea {
+#editor {
     flex: 1;
     padding: 4px;
     margin: 0;
