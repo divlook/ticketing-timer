@@ -22,7 +22,8 @@
   "main": "dist/ticketing.js",
   "scripts": {
     "dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "start": "npx serve -l 9000 build"
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
