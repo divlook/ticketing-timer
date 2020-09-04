@@ -43,9 +43,7 @@ function init() {
             return
         }
 
-        const datetime = [input.date.value, ' ', input.time.value, ':00'].join(
-            ''
-        )
+        const datetime = [input.date.value, ' ', input.time.value].join('')
 
         timer.start(datetime)
     }
@@ -92,6 +90,6 @@ function init() {
     function setInitialValue() {
         const now = moment().add(3, 'minute')
         input.date.value = now.format('YYYY-MM-DD')
-        input.time.value = now.format('HH:mm')
+        input.time.value = now.format('HH:mm:ss')
     }
 }
