@@ -12,20 +12,20 @@ const log = logger()
 log.clear = true
 
 /**
- * Ticketing Options
+ * TicketingTimer Options
  */
 export const ticketingOptions = {
     onLogging: () => {},
 }
 
 /**
- * Ticketing
+ * TicketingTimer
  *
  * @example
- * const ticketing = new Ticketing('ktx')
- * ticketing.start('2020-09-02 12:21:00')
+ * const timer = new TicketingTimer('ktx')
+ * timer.start('2020-09-02 12:21:00')
  */
-class Ticketing {
+class TicketingTimer {
     #input = 0
     #player
     #callback
@@ -169,4 +169,4 @@ class Ticketing {
     }
 }
 
-export default Ticketing
+export default TicketingTimer

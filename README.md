@@ -1,7 +1,7 @@
 # README
 
-![Auto Release](https://github.com/divlook/ticketing/workflows/Auto%20Release/badge.svg)
-![Create Pages](https://github.com/divlook/ticketing/workflows/Create%20Pages/badge.svg)
+![Auto Release](https://github.com/divlook/ticketing-timer/workflows/Auto%20Release/badge.svg)
+![Create Pages](https://github.com/divlook/ticketing-timer/workflows/Create%20Pages/badge.svg)
 
 티켓팅을 위한 모듈입니다.
 
@@ -24,7 +24,7 @@
 3. 개발자 도구 실행
    - Window: F12
    - OSX: ⌥ + ⌘ + i (option + command + i)
-4. [소스](./dist/ticketing.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
+4. [소스](./dist/ticketing-timer.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
 5. [예제](#예제) 소스를 복사하여 Console 탭에 붙여넣기
 6. `type`과 `datetime` 수정 후 `Enter`
 
@@ -37,7 +37,7 @@
 ## Docs
 
 ```js
-new Ticketing(typeOrCallback[, ticketingOptions])
+new TicketingTimer(typeOrCallback[, ticketingOptions])
 ```
 
 ### 예제
@@ -45,17 +45,17 @@ new Ticketing(typeOrCallback[, ticketingOptions])
 #### KTX 예매
 
 ```js
-const ticketing = new Ticketing('ktx')
-ticketing.start('2020-09-08 07:00:00') // 날짜 입력
+const timer = new TicketingTimer('ktx')
+timer.start('2020-09-08 07:00:00') // 날짜 입력
 ```
 
 #### 커스텀
 
 ```js
-const ticketing = new Ticketing(() => {
+const timer = new TicketingTimer(() => {
     console.log('여기에 커스텀 코드 추가')
 })
-ticketing.start('2020-09-08 07:00:00') // 날짜 입력
+timer.start('2020-09-08 07:00:00') // 날짜 입력
 ```
 
 ### 변수
@@ -75,7 +75,7 @@ ticketing.start('2020-09-08 07:00:00') // 날짜 입력
 타이머를 실행합니다.
 
 ```js
-ticketing.start(datetime)
+timer.start(datetime)
 ```
 
 #### stop
@@ -83,7 +83,7 @@ ticketing.start(datetime)
 타이머를 종료합니다.
 
 ```js
-ticketing.stop()
+timer.stop()
 ```
 
 ### 옵션
@@ -91,7 +91,7 @@ ticketing.stop()
 #### onLogging
 
 ```js
-new Ticketing(typeOrCallback, {
+new TicketingTimer(typeOrCallback, {
     onLogging: function(...msg) {
         console.log('onLogging : ', ...msg)
     },

@@ -1,7 +1,7 @@
-import Ticketing from '@/ticketing'
+import TicketingTimer from '@/ticketing-timer'
 
 if (window) {
-    window['Ticketing'] = Ticketing
+    window['TicketingTimer'] = TicketingTimer
 }
 
-export default Ticketing
+export default TicketingTimer

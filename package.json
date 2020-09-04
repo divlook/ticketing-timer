@@ -1,9 +1,10 @@
 {
-  "name": "@divlook/ticketing",
+  "name": "@divlook/ticketing-timer",
   "version": "1.2.1",
   "description": "티켓팅을 위한 모듈입니다.",
   "keywords": [
     "Ticketing",
+    "Timer",
     "SRT",
     "KTX"
   ],
@@ -11,12 +12,12 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/divlook/ticketing.git"
+    "url": "https://github.com/divlook/ticketing-timer.git"
   },
   "bugs": {
-    "url": "https://github.com/divlook/ticketing/issues"
+    "url": "https://github.com/divlook/ticketing-timer/issues"
   },
-  "homepage": "https://github.com/divlook/ticketing#readme",
+  "homepage": "https://github.com/divlook/ticketing-timer#readme",
   "license": "MIT",
   "main": "dist/ticketing.js",
   "scripts": {
