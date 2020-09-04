@@ -94,7 +94,81 @@ timer.stop()
 
 ### 옵션
 
+#### onInit
+
+인스턴스가 생성되었을 때
+
+```js
+new TicketingTimer(typeOrCallback, {
+    onInit: function() {
+        console.log('on init')
+    },
+})
+```
+
+#### onReject
+
+실행이 거부되었을 때
+
+```js
+new TicketingTimer(typeOrCallback, {
+    onReject: function() {
+        console.log('on reject')
+    },
+})
+```
+
+#### onStart
+
+실행이 시작 되었을 때
+
+```js
+new TicketingTimer(typeOrCallback, {
+    onStart: function() {
+        console.log('on start')
+    },
+})
+```
+
+#### onStop
+
+실행이 종료 되었을 때
+
+```js
+new TicketingTimer(typeOrCallback, {
+    onStop: function() {
+        console.log('on stop')
+    },
+})
+```
+
+#### onTimeupdate
+
+시간이 업데이트 되었을 때
+
+```js
+new TicketingTimer(typeOrCallback, {
+    onTimeupdate: function() {
+        console.log('on timeupdate')
+    },
+})
+```
+
+#### onComplete
+
+실행이 완료 되었을 때
+
+```js
+new TicketingTimer(typeOrCallback, {
+    onComplete: function() {
+        console.log('on complete')
+    },
+})
+```
+
 #### onLogging
+
+로그가 전달 되었을 때
 
 ```js
 new TicketingTimer(typeOrCallback, {
