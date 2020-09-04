@@ -12,13 +12,8 @@ function init() {
 
     const consoleSection = document.querySelector('section.console')
     const form = document.querySelector('form')
-
-    const inputs = Array.from(document.querySelectorAll('input'))
-    const date = inputs.find((el) => el.id === 'date')
-    const time = inputs.find((el) => el.id === 'time')
-
-    const buttons = Array.from(document.querySelectorAll('button'))
-    const cancel = buttons.find((el) => el.id === 'cancel')
+    const input = getInputs()
+    const button = getButtons()
 
     const timer = new TicketingTimer(onComplete, {
         onLogging: onLogging,
@@ -68,22 +63,17 @@ function init() {
     function startTicketing() {
         clearMain()
 
-        if (!date.value) {
+        if (!input.date.value) {
             consoleSection.appendChild(createArticle('날짜를 입력해주세요.'))
             return
         }
 
-        if (!time.value) {
+        if (!input.time.value) {
             consoleSection.appendChild(createArticle('날짜를 입력해주세요.'))
             return
         }
 
-        const datetime = [
-            date.value,
-            ' ',
-            time.value,
-            ':00',
-        ].join('')
+        const datetime = [input.date.value, ' ', input.time.value, ':00'].join('')
 
         timer.start(datetime)
     }
@@ -126,7 +116,7 @@ function init() {
             return
         }
 
-        cancel.addEventListener('click', function() {
+        button.cancel.addEventListener('click', function () {
             cb()
         })
     }
@@ -140,5 +130,28 @@ function init() {
     function resetTicketing() {
         stopTicketing()
         clearMain()
+    }
+
+    function getInputs() {
+        const list = Array.from(document.querySelectorAll('input'))
+        const map = new Map(list.map((el) => [el.id, el]))
+
+        return {
+            list,
+            date: map.get('date'),
+            time: map.get('time'),
+        }
+    }
+
+    function getButtons() {
+        const list = Array.from(document.querySelectorAll('button'))
+        const map = new Map(list.map((el) => [el.id, el]))
+
+        return {
+            list,
+            reset: map.get('reset'),
+            cancel: map.get('cancel'),
+            submit: map.get('submit'),
+        }
     }
 }
