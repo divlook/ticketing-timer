@@ -1,4 +1,11 @@
-'use strict'
+import {
+    getConsoleSection,
+    getForm,
+    getButtons,
+    getInputs,
+    createArticle,
+} from '@/utils/dom'
+import { onSubmit, onReset, onClick } from '@/utils/dom.event'
 
 document.addEventListener('DOMContentLoaded', init)
 
@@ -10,70 +17,33 @@ function init() {
 
     console.log('TicketingTimer 모듈이 로드되었습니다.')
 
-    const consoleSection = document.querySelector('section.console')
-    const form = document.querySelector('form')
+    const consoleSection = getConsoleSection()
+    const form = getForm()
     const input = getInputs()
     const button = getButtons()
 
-    const timer = new TicketingTimer(onComplete, {
-        onLogging: onLogging,
-    })
+    const timer = new TicketingTimer(completeTicketing, { onLogging })
 
-    preventSubmit()
-    onSubmit(startTicketing)
-    onReset(resetTicketing)
-    onCancel(stopTicketing)
-
-    function createArticle(text = '') {
-        if (!text) {
-            return null
-        }
-
-        const article = document.createElement('article')
-        article.innerText = text
-        return article
-    }
-
-    function preventSubmit() {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault()
-        })
-    }
-
-    function onSubmit(cb) {
-        if (typeof cb !== 'function') {
-            return
-        }
-
-        form.addEventListener('submit', function () {
-            cb()
-        })
-    }
-
-    function onReset(cb) {
-        if (typeof cb !== 'function') {
-            return
-        }
-
-        form.addEventListener('reset', function () {
-            cb()
-        })
-    }
+    onSubmit(form, startTicketing)
+    onReset(form, resetTicketing)
+    onClick(button.cancel, stopTicketing)
 
     function startTicketing() {
-        clearMain()
+        consoleSection.clear()
 
         if (!input.date.value) {
-            consoleSection.appendChild(createArticle('날짜를 입력해주세요.'))
+            consoleSection.add(createArticle('날짜를 입력해주세요.'))
             return
         }
 
         if (!input.time.value) {
-            consoleSection.appendChild(createArticle('날짜를 입력해주세요.'))
+            consoleSection.add(createArticle('날짜를 입력해주세요.'))
             return
         }
 
-        const datetime = [input.date.value, ' ', input.time.value, ':00'].join('')
+        const datetime = [input.date.value, ' ', input.time.value, ':00'].join(
+            ''
+        )
 
         timer.start(datetime)
     }
@@ -82,10 +52,14 @@ function init() {
         timer.stop()
     }
 
-    function onComplete() {
-        clearMain()
-        console.log('타이머 종료!')
-        consoleSection.appendChild(createArticle('타이머 종료!'))
+    function completeTicketing() {
+        consoleSection.clear()
+        consoleSection.add(createArticle('타이머 종료!'))
+    }
+
+    function resetTicketing() {
+        stopTicketing()
+        consoleSection.clear()
     }
 
     function onLogging(...msgs) {
@@ -95,7 +69,7 @@ function init() {
                     return msg
                 }
 
-                if (msg === null || msg === undefined) {
+                if (msg ?? null === null) {
                     return ''
                 }
 
@@ -103,55 +77,10 @@ function init() {
             })
             .filter((msg) => !!msg)
             .join(', ')
-        const article = createArticle(text)
 
-        if (article) {
-            clearMain()
-            consoleSection.appendChild(article)
-        }
-    }
-
-    function onCancel(cb) {
-        if (typeof cb !== 'function') {
-            return
-        }
-
-        button.cancel.addEventListener('click', function () {
-            cb()
+        createArticle(text, (article) => {
+            consoleSection.clear()
+            consoleSection.add(article)
         })
-    }
-
-    function clearMain() {
-        while (consoleSection.firstChild) {
-            consoleSection.removeChild(consoleSection.firstChild)
-        }
-    }
-
-    function resetTicketing() {
-        stopTicketing()
-        clearMain()
-    }
-
-    function getInputs() {
-        const list = Array.from(document.querySelectorAll('input'))
-        const map = new Map(list.map((el) => [el.id, el]))
-
-        return {
-            list,
-            date: map.get('date'),
-            time: map.get('time'),
-        }
-    }
-
-    function getButtons() {
-        const list = Array.from(document.querySelectorAll('button'))
-        const map = new Map(list.map((el) => [el.id, el]))
-
-        return {
-            list,
-            reset: map.get('reset'),
-            cancel: map.get('cancel'),
-            submit: map.get('submit'),
-        }
     }
 }
