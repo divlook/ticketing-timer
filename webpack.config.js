@@ -6,11 +6,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const npmLifecycleEvent = process.env.npm_lifecycle_event
 const isDevPhase = npmLifecycleEvent === 'dev'
 const isBuildPhase = npmLifecycleEvent === 'build'
-const buildKey = Date.now().toString(16)
 
 const config = {
     stats: 'minimal',
@@ -18,6 +18,7 @@ const config = {
         alias: {
             '@': rootDir('src'),
         },
+        extensions: ['.js', '.json', '.ejs', 'html', '.css'],
     },
     entry: {
         app: rootDir('src/app.js'),
@@ -29,9 +30,7 @@ const config = {
         publicPath: '',
     },
     module: {
-        rules: [
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-        ],
+        rules: [],
     },
     plugins: [new ProgressPlugin()],
     optimization: {},
@@ -67,8 +66,10 @@ function rootDir(...p) {
 
 function devConfig() {
     useDevServer()
+    useBabel()
     useIndexHtml()
-    useCopyPlugin()
+    // useCopyPlugin()
+    useCssLoader(true)
 
     return config
 }
@@ -87,9 +88,11 @@ function buildConfig(options) {
         config.output.path = rootDir(options.outputPath)
     }
 
+    useBabel()
     useIndexHtml()
-    useCopyPlugin()
+    // useCopyPlugin()
     useMomentLocalesPlugin()
+    useCssLoader()
 
     return config
 }
@@ -115,7 +118,6 @@ function useIndexHtml() {
             templateParameters: {
                 title,
                 publicPath,
-                buildKey,
             },
             chunks: ['main', 'app'],
             chunksSortMode: 'manual',
@@ -159,4 +161,34 @@ function useMomentLocalesPlugin() {
             localesToKeep: ['es-us', 'ko'],
         })
     )
+}
+
+function useCssLoader(isDev = false) {
+    config.plugins.push(
+        new MiniCssExtractPlugin({
+            filename: 'styles/[name].css',
+        })
+    )
+
+    config.module.rules.push({
+        test: /\.css$/i,
+        use: [
+            {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                    hmr: isDev,
+                },
+            },
+            'css-loader',
+            'postcss-loader',
+        ],
+    })
+}
+
+function useBabel() {
+    config.module.rules.push({
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+    })
 }

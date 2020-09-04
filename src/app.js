@@ -11,6 +11,7 @@ import {
 } from '@/utils/dom'
 import { onSubmit, onReset, onClick, onChange } from '@/utils/dom.event'
 import { createCode } from '@/utils'
+import '@/styles/style.css'
 
 document.addEventListener('DOMContentLoaded', init)
 
