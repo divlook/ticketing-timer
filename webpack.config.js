@@ -65,16 +65,7 @@ function rootDir(...p) {
 }
 
 function devConfig() {
-    config.devServer = {
-        contentBase: [
-            rootDir('build'),
-            rootDir('public'),
-            //
-        ],
-        port: 9000,
-        host: '0.0.0.0',
-    }
-
+    useDevServer()
     useIndexHtml()
 
     return config
@@ -144,4 +135,17 @@ function useCopyPlugin() {
             ],
         })
     )
+}
+
+function useDevServer() {
+    config.devServer = {
+        contentBase: [
+            rootDir('build'),
+            rootDir('public'),
+            //
+        ],
+        port: 9000,
+        host: '0.0.0.0',
+        hot: true,
+    }
 }
