@@ -24,7 +24,7 @@ const config = {
         main: rootDir('src/main.js'),
     },
     output: {
-        filename: '[name].js',
+        filename: () => '[name].js',
         path: rootDir('build'),
         publicPath: '',
     },
@@ -51,7 +51,7 @@ module.exports = function (env, argv) {
     }
 
     if (isDevPhase) {
-        return devConfig(options)
+        return devConfig()
     }
 
     if (isBuildPhase) {
