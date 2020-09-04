@@ -12,7 +12,7 @@ body {
     align-items: center;
 }
 
-section {
+main {
     display: flex;
     flex-direction: column;
     max-width: 1024px;
@@ -20,7 +20,7 @@ section {
     overflow: hidden;
 }
 
-main {
+section.console {
     overflow-y: auto;
 }
 
