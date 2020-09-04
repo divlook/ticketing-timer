@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', init)
 
 function init() {
-    if (typeof window.Ticketing === 'undefined') {
-        console.error('Ticketing 모듈이 선언되지 않았습니다.')
+    if (typeof window.TicketingTimer === 'undefined') {
+        console.error('TicketingTimer 모듈이 선언되지 않았습니다.')
         return
     }
 
-    console.log('Ticketing 모듈이 로드되었습니다.')
+    console.log('TicketingTimer 모듈이 로드되었습니다.')
 
     const main = document.querySelector('main')
     const form = document.querySelector('form')
@@ -18,7 +18,7 @@ function init() {
     const buttons = Array.from(document.querySelectorAll('button'))
     const cancel = buttons.find((el) => el.id === 'cancel')
 
-    const ticketing = new Ticketing(onComplete, {
+    const timer = new TicketingTimer(onComplete, {
         onLogging: onLogging,
     })
 
@@ -83,11 +83,11 @@ function init() {
             ':00',
         ].join('')
 
-        ticketing.start(datetime)
+        timer.start(datetime)
     }
 
     function stopTicketing() {
-        ticketing.stop()
+        timer.stop()
     }
 
     function onComplete() {

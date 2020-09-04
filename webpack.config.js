@@ -76,7 +76,7 @@ function devConfig() {
 
 function buildConfig(options) {
     config.plugins.push(new CleanWebpackPlugin())
-    config.output.filename = 'ticketing.js'
+    config.output.filename = 'ticketing-timer.js'
 
     if (options.outputPath) {
         config.output.path = rootDir(options.outputPath)
