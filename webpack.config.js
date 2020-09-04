@@ -16,9 +16,12 @@ const config = {
             '@': rootDir('src'),
         },
     },
-    entry: rootDir('src/main.js'),
+    entry: {
+        app: rootDir('src/app.js'),
+        main: rootDir('src/main.js'),
+    },
     output: {
-        filename: 'main.js',
+        filename: '[name].js',
         path: rootDir('build'),
         publicPath: '',
     },
@@ -77,7 +80,13 @@ function devConfig() {
 
 function buildConfig(options) {
     config.plugins.push(new CleanWebpackPlugin())
-    config.output.filename = 'ticketing-timer.js'
+    config.output.filename = (pathData) => {
+        if (pathData.chunk.name === 'main') {
+            return 'ticketing-timer.js'
+        }
+
+        return '[name].js'
+    }
 
     if (options.outputPath) {
         config.output.path = rootDir(options.outputPath)
