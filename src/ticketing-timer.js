@@ -30,6 +30,7 @@ export const ticketingOptions = {
 class TicketingTimer {
     #input = 0
     #player
+    #ticketingType
     #callback
     /**
      * @type { Map<TicketingType, () => void> }
@@ -49,15 +50,35 @@ class TicketingTimer {
 
         if (typeof typeOrCallback === 'function') {
             this.#callback = typeOrCallback
+            this.#ticketingType = 'custom'
             return
         }
 
         if (this.#callbackMap.has(typeOrCallback)) {
             this.#callback = this.#callbackMap.get(typeOrCallback)
+            this.#ticketingType = typeOrCallback
             return
         }
 
         this.log.notice = 'callback이 없습니다.'
+    }
+
+    /**
+     * hostname 확인
+     * @param {TicketingType} type
+     */
+    checkHostname(type) {
+        if (type === 'ktx' && location.hostname !== 'www.letskorail.com') {
+            this.log('www.letskorail.com 에서만 사용할 수 있습니다.')
+            return false
+        }
+
+        if (type === 'srt' && location.hostname !== 'etk.srail.kr') {
+            this.log('etk.srail.kr 에서만 사용할 수 있습니다.')
+            return false
+        }
+
+        return true
     }
 
     /**
@@ -66,7 +87,14 @@ class TicketingTimer {
      * @param { string } datetime YYYY-MM-DD HH:mm:ss (ex '2020-09-02 12:21:00')
      */
     start(datetime) {
+        const isCustom = this.#ticketingType === 'custom'
+        const isAllowedHostname = this.checkHostname(this.#ticketingType)
+
         this.stop()
+
+        if (!isCustom && !isAllowedHostname) {
+            return
+        }
 
         if (!datetime) {
             this.log('날짜 및 시간을 입력해주세요.')
