@@ -17,6 +17,12 @@ log.clear = true
  * TicketingTimer Options
  */
 export const ticketingOptions = {
+    onInit: null,
+    onReject: null,
+    onStart: null,
+    onStop: null,
+    onTimeupdate: null,
+    onComplete: null,
     onLogging: null,
 }
 
@@ -90,17 +96,20 @@ class TicketingTimer {
         const isCustom = this.#ticketingType === 'custom'
         const isAllowedHostname = this.checkHostname(this.#ticketingType)
 
-        this.stop()
+        clearInterval(this.#player)
 
         if (!isCustom && !isAllowedHostname) {
+            this.emitReject()
             return
         }
 
         if (!datetime) {
+            this.emitReject()
             this.log('날짜 및 시간을 입력해주세요.')
             return
         }
 
+        this.emitStart()
         this.#input = moment(datetime).valueOf()
         this.#player = setInterval(() => {
             this.timeupdate()
@@ -112,6 +121,7 @@ class TicketingTimer {
      * @public
      */
     stop() {
+        this.emitStop()
         clearInterval(this.#player)
     }
 
@@ -131,6 +141,8 @@ class TicketingTimer {
                 }
             })
         })
+
+        this.emitInit()
     }
 
     /**
@@ -147,9 +159,8 @@ class TicketingTimer {
      * @private
      */
     timeupdate() {
-        const serverTime = Date.now()
         const endTime = this.#input
-        const remainTime = endTime - serverTime
+        const remainTime = endTime - Date.now()
 
         if (remainTime <= 0) {
             this.complete()
@@ -163,11 +174,14 @@ class TicketingTimer {
             m = Math.floor(s / 60)
             s = s % 60
         }
+
         this.log(timestamp`${m}:${s}:${ms}`)
+        this.emitTimeupdate()
     }
 
     complete() {
         clearInterval(this.#player)
+        this.emitComplete()
 
         if (this.#callback) {
             this.#callback()
@@ -177,14 +191,64 @@ class TicketingTimer {
         this.log('종료되었습니다.')
     }
     log(...msgs) {
+        this.emitLogging(...msgs)
+        this.#log(...msgs)
+    }
+
+    emitInit() {
+        const onInit = this.#options?.onInit
+
+        if (typeof onInit === 'function') {
+            onInit()
+        }
+    }
+
+    emitReject() {
+        const onReject = this.#options?.onReject
+
+        if (typeof onReject === 'function') {
+            onReject()
+        }
+    }
+
+    emitStart() {
+        const onStart = this.#options?.onStart
+
+        if (typeof onStart === 'function') {
+            onStart()
+        }
+    }
+
+    emitStop() {
+        const onStop = this.#options?.onStop
+
+        if (typeof onStop === 'function') {
+            onStop()
+        }
+    }
+
+    emitTimeupdate() {
+        const onTimeupdate = this.#options?.onTimeupdate
+
+        if (typeof onTimeupdate === 'function') {
+            onTimeupdate()
+        }
+    }
+
+    emitComplete() {
+        const onComplete = this.#options?.onComplete
+
+        if (typeof onComplete === 'function') {
+            onComplete()
+        }
+    }
+
+    emitLogging(...msgs) {
         const onLogging = this.#options?.onLogging
 
         if (typeof onLogging === 'function') {
-            this.#options.onLogging(...msgs)
-            return
+            onLogging(...msgs)
         }
-
-        this.#log(...msgs)
     }
 }
 
