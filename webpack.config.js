@@ -68,6 +68,7 @@ function rootDir(...p) {
 function devConfig() {
     useDevServer()
     useIndexHtml()
+    useCopyPlugin()
 
     return config
 }
