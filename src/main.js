@@ -1,3 +1,4 @@
+import '@/plugins/moment'
 import TicketingTimer from '@/ticketing-timer'
 
 if (window) {

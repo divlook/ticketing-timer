@@ -1,3 +1,4 @@
+import moment from 'moment'
 import logger from '@/utils/logger'
 import { timestamp } from '@/utils'
 
@@ -71,7 +72,7 @@ class TicketingTimer {
             return
         }
 
-        this.#input = new Date(datetime).getTime()
+        this.#input = moment(datetime).valueOf()
         this.#player = setInterval(() => {
             this.timeupdate()
         }, 100)

@@ -5,6 +5,7 @@ const { ProgressPlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 
 const npmLifecycleEvent = process.env.npm_lifecycle_event
 const isDevPhase = npmLifecycleEvent === 'dev'
@@ -87,6 +88,7 @@ function buildConfig(options) {
 
     useIndexHtml()
     useCopyPlugin()
+    useMomentLocalesPlugin()
 
     return config
 }
@@ -148,4 +150,12 @@ function useDevServer() {
         host: '0.0.0.0',
         hot: true,
     }
+}
+
+function useMomentLocalesPlugin() {
+    config.plugins.push(
+        new MomentLocalesPlugin({
+            localesToKeep: ['es-us', 'ko'],
+        })
+    )
 }
