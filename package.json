@@ -23,6 +23,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
+    "build.github": "yarn build --output-path dist",
     "start": "npx serve -l 9000 build"
   },
   "devDependencies": {

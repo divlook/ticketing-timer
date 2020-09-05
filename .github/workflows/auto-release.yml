@@ -32,7 +32,7 @@ jobs:
         run: rm -rf dist
 
       - name: Build
-        run: yarn build --output-path dist
+        run: yarn build.github
 
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.4.1
