@@ -31,6 +31,7 @@ window.addEventListener('load', () => {
  */
 export function codeHighlight(el, code) {
     code += '\n'
+    el.append('\n')
 
     if (worker) {
         state.elList.push(el)
