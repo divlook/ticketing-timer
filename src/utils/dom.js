@@ -74,3 +74,28 @@ export function createArticle(text = '', onSuccess = null) {
 
     return article
 }
+
+export function getSelects() {
+    const list = Array.from(document.querySelectorAll('select'))
+    const map = new Map(list.map((el) => [el.id, el]))
+
+    return {
+        list,
+        ticketingType: map.get('ticketing-type'),
+    }
+}
+
+export function getEditors() {
+    /**
+     * @type { HTMLTextAreaElement }
+     */
+    const textarea = document.getElementById('editor')
+    const preview = document.getElementById('editor-preview')
+    const list = [textarea, preview]
+
+    return {
+        list,
+        textarea,
+        preview
+    }
+}

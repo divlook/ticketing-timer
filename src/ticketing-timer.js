@@ -1,5 +1,7 @@
+import moment from 'moment'
 import logger from '@/utils/logger'
 import { timestamp } from '@/utils'
+import * as callbacks from '@/callbacks'
 
 /**
  * @typedef { 'ktx' | 'srt' } TicketingType
@@ -15,6 +17,12 @@ log.clear = true
  * TicketingTimer Options
  */
 export const ticketingOptions = {
+    onInit: null,
+    onReject: null,
+    onStart: null,
+    onStop: null,
+    onTimeupdate: null,
+    onComplete: null,
     onLogging: null,
 }
 
@@ -28,6 +36,7 @@ export const ticketingOptions = {
 class TicketingTimer {
     #input = 0
     #player
+    #ticketingType
     #callback
     /**
      * @type { Map<TicketingType, () => void> }
@@ -47,15 +56,35 @@ class TicketingTimer {
 
         if (typeof typeOrCallback === 'function') {
             this.#callback = typeOrCallback
+            this.#ticketingType = 'custom'
             return
         }
 
         if (this.#callbackMap.has(typeOrCallback)) {
             this.#callback = this.#callbackMap.get(typeOrCallback)
+            this.#ticketingType = typeOrCallback
             return
         }
 
         this.log.notice = 'callback이 없습니다.'
+    }
+
+    /**
+     * hostname 확인
+     * @param {TicketingType} type
+     */
+    checkHostname(type) {
+        if (type === 'ktx' && location.hostname !== 'www.letskorail.com') {
+            this.log('www.letskorail.com 에서만 사용할 수 있습니다.')
+            return false
+        }
+
+        if (type === 'srt' && location.hostname !== 'etk.srail.kr') {
+            this.log('etk.srail.kr 에서만 사용할 수 있습니다.')
+            return false
+        }
+
+        return true
     }
 
     /**
@@ -64,14 +93,24 @@ class TicketingTimer {
      * @param { string } datetime YYYY-MM-DD HH:mm:ss (ex '2020-09-02 12:21:00')
      */
     start(datetime) {
-        this.stop()
+        const isCustom = this.#ticketingType === 'custom'
+        const isAllowedHostname = this.checkHostname(this.#ticketingType)
+
+        clearInterval(this.#player)
+
+        if (!isCustom && !isAllowedHostname) {
+            this.emitReject()
+            return
+        }
 
         if (!datetime) {
+            this.emitReject()
             this.log('날짜 및 시간을 입력해주세요.')
             return
         }
 
-        this.#input = new Date(datetime).getTime()
+        this.emitStart()
+        this.#input = moment(datetime).valueOf()
         this.#player = setInterval(() => {
             this.timeupdate()
         }, 100)
@@ -82,6 +121,7 @@ class TicketingTimer {
      * @public
      */
     stop() {
+        this.emitStop()
         clearInterval(this.#player)
     }
 
@@ -92,29 +132,17 @@ class TicketingTimer {
             }
         })
 
-        this.#callbackMap.set('ktx', () => {
-            const NetFunnel = window?.NetFunnel
-            const NetFunnel_goAliveNotice = NetFunnel?.NetFunnel_goAliveNotice
+        Object.keys(callbacks).forEach((key) => {
+            this.#callbackMap.set(key, () => {
+                const errMsg = callbacks[key]
 
-            if (typeof NetFunnel_goAliveNotice !== 'function') {
-                // prettier-ignore
-                this.log('NetFunnel.NetFunnel_goAliveNotice 메서드가 존재하지 않습니다.')
-                return
-            }
-
-            NetFunnel_goAliveNotice(1)
+                if (errMsg) {
+                    this.log(errMsg)
+                }
+            })
         })
 
-        this.#callbackMap.set('srt', () => {
-            const goPage = window?.goPage
-
-            if (typeof goPage !== 'function') {
-                this.log('goPage 메서드가 존재하지 않습니다.')
-                return
-            }
-
-            goPage(1)
-        })
+        this.emitInit()
     }
 
     /**
@@ -131,9 +159,8 @@ class TicketingTimer {
      * @private
      */
     timeupdate() {
-        const serverTime = Date.now()
         const endTime = this.#input
-        const remainTime = endTime - serverTime
+        const remainTime = endTime - Date.now()
 
         if (remainTime <= 0) {
             this.complete()
@@ -147,11 +174,14 @@ class TicketingTimer {
             m = Math.floor(s / 60)
             s = s % 60
         }
+
         this.log(timestamp`${m}:${s}:${ms}`)
+        this.emitTimeupdate()
     }
 
     complete() {
         clearInterval(this.#player)
+        this.emitComplete()
 
         if (this.#callback) {
             this.#callback()
@@ -161,14 +191,64 @@ class TicketingTimer {
         this.log('종료되었습니다.')
     }
     log(...msgs) {
+        this.emitLogging(...msgs)
+        this.#log(...msgs)
+    }
+
+    emitInit() {
+        const onInit = this.#options?.onInit
+
+        if (typeof onInit === 'function') {
+            onInit()
+        }
+    }
+
+    emitReject() {
+        const onReject = this.#options?.onReject
+
+        if (typeof onReject === 'function') {
+            onReject()
+        }
+    }
+
+    emitStart() {
+        const onStart = this.#options?.onStart
+
+        if (typeof onStart === 'function') {
+            onStart()
+        }
+    }
+
+    emitStop() {
+        const onStop = this.#options?.onStop
+
+        if (typeof onStop === 'function') {
+            onStop()
+        }
+    }
+
+    emitTimeupdate() {
+        const onTimeupdate = this.#options?.onTimeupdate
+
+        if (typeof onTimeupdate === 'function') {
+            onTimeupdate()
+        }
+    }
+
+    emitComplete() {
+        const onComplete = this.#options?.onComplete
+
+        if (typeof onComplete === 'function') {
+            onComplete()
+        }
+    }
+
+    emitLogging(...msgs) {
         const onLogging = this.#options?.onLogging
 
         if (typeof onLogging === 'function') {
-            this.#options.onLogging(...msgs)
-            return
+            onLogging(...msgs)
         }
-
-        this.#log(...msgs)
     }
 }
 
