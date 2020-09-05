@@ -9,7 +9,9 @@ services:
         network_mode: "bridge"
         ports:
             - 9000:9000
-        volumes: [".:/app"]
+        volumes:
+            - ".:/app"
+            - "~/.ssh/id_rsa:/root/.ssh/id_rsa"
         working_dir: "/app"
         stdin_open: true
         tty: true
