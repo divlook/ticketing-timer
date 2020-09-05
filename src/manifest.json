@@ -1,0 +1,15 @@
+{
+    "manifest_version": 2,
+    "name": "Ticketing Timer",
+    "version": "1.0.0",
+    "description": "티켓팅을 위한 앱입니다.",
+    "icons": {
+        "16": "img/icon@16.png",
+        "48": "img/icon@48.png",
+        "128": "img/icon@128.png"
+    },
+    "browser_action": {
+        "default_popup": "index.html"
+    },
+    "permissions": ["storage", "tabs"]
+}

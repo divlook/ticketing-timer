@@ -1,12 +1,13 @@
 'use strict'
 
 const path = require('path')
-const { ProgressPlugin } = require('webpack')
+const { ProgressPlugin, DefinePlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { version } = require('./package.json')
 
 const npmLifecycleEvent = process.env.npm_lifecycle_event
 const isDevPhase = npmLifecycleEvent === 'dev'
@@ -40,11 +41,19 @@ const config = {
 const options = {
     outputPath: null,
     publicPath: null,
+    envMode: setEnvMode(),
 }
 
 module.exports = function (env, argv) {
     options.outputPath = isNullish(argv['output-path'])
     options.publicPath = isNullish(argv['public-path'])
+    options.envMode = setEnvMode(argv['env-mode'])
+
+    useDefinePlugin()
+    useBabel()
+    useIndexHtml()
+    useCopyPlugin()
+    useWorker()
 
     if (options.publicPath) {
         config.output.publicPath = options.publicPath
@@ -55,7 +64,7 @@ module.exports = function (env, argv) {
     }
 
     if (isBuildPhase) {
-        return buildConfig(options)
+        return buildConfig()
     }
 
     return config
@@ -67,16 +76,12 @@ function rootDir(...p) {
 
 function devConfig() {
     useDevServer()
-    useBabel()
-    useIndexHtml()
-    // useCopyPlugin()
     useCssLoader(true)
-    useWorker()
 
     return config
 }
 
-function buildConfig(options) {
+function buildConfig() {
     config.plugins.push(new CleanWebpackPlugin())
     config.output.filename = (pathData) => {
         if (pathData.chunk.name === 'main') {
@@ -90,12 +95,8 @@ function buildConfig(options) {
         config.output.path = rootDir(options.outputPath)
     }
 
-    useBabel()
-    useIndexHtml()
-    // useCopyPlugin()
     useMomentLocalesPlugin()
     useCssLoader()
-    useWorker()
 
     return config
 }
@@ -119,8 +120,9 @@ function useIndexHtml() {
             template: rootDir('public/index.ejs'),
             minify: false,
             templateParameters: {
-                title,
-                publicPath,
+                TITLE: title,
+                PUBLIC_PATH: publicPath,
+                ENV_MODE: options.envMode
             },
             chunks: ['main', 'app'],
             chunksSortMode: 'manual',
@@ -133,16 +135,37 @@ function useCopyPlugin() {
     config.plugins.push(
         new CopyPlugin({
             patterns: [
-                {
-                    from: rootDir('public/**/*'),
-                    context: 'public/',
-                    globOptions: {
-                        ignore: ['**/*.html', '**/*.ejs'],
-                    },
-                },
+                usePublicDir(),
+                useManifestJson(),
+                //
             ],
         })
     )
+
+    function usePublicDir() {
+        return {
+            from: rootDir('public/**/*'),
+            context: 'public/',
+            globOptions: {
+                ignore: [
+                    '**/*.html',
+                    '**/*.ejs',
+                    //
+                ],
+            },
+        }
+    }
+
+    function useManifestJson() {
+        return {
+            from: 'src/manifest.json',
+            transform(content) {
+                const manifest = JSON.parse(content.toString())
+                manifest.version = version
+                return JSON.stringify(manifest, null, 4)
+            },
+        }
+    }
 }
 
 function useDevServer() {
@@ -197,4 +220,20 @@ function useWorker() {
         test: /\.worker\.js$/,
         use: ['worker-loader', 'babel-loader'],
     })
+}
+
+function useDefinePlugin() {
+    config.plugins.push(
+        new DefinePlugin({
+            ENV_MODE: JSON.stringify(options.envMode)
+        })
+    )
+}
+
+function setEnvMode(value) {
+    if (value === 'chrome') {
+        return 'chrome'
+    }
+
+    return 'web'
 }

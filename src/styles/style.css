@@ -14,6 +14,11 @@ body {
     align-items: center;
 }
 
+body.env-mode-chrome {
+    min-width: 400px;
+    min-height: 480px;
+}
+
 main {
     display: flex;
     flex-direction: column;

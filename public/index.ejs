@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><%= title %></title>
+    <title><%= TITLE %></title>
 
 </head>
-<body>
+<body class="env-mode-<%= ENV_MODE %>">
     <main>
         <header>
-            <h3><%= title %></h3>
+            <h3><%= TITLE %></h3>
             <p>날짜와 시간을 입력 해주세요</p>
             <form id="form">
                 <p class="input-container">

@@ -24,6 +24,7 @@
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "build.github": "yarn build --output-path dist",
+    "build.chrome": "yarn build --env-mode chrome",
     "start": "npx serve -l 9000 build"
   },
   "devDependencies": {
