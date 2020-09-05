@@ -64,3 +64,23 @@ export function onChange(el, cb, option) {
 export function onInput(el, cb, option) {
     useEventListener(el, 'input', cb, option)
 }
+
+/**
+ * On Keydown
+ * @param { HTMLInputElement | HTMLTextAreaElement } el
+ * @param { (e: Event) => void } cb
+ * @param { any } [option]
+ */
+export function onKeydown(el, cb, option) {
+    useEventListener(el, 'keydown', cb, option)
+}
+
+/**
+ * On Scroll
+ * @param { HTMLElement } el
+ * @param { (e: Event) => void } cb
+ * @param { any } [option]
+ */
+export function onScroll(el, cb, option) {
+    useEventListener(el, 'scroll', cb, option)
+}

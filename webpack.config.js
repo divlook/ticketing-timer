@@ -23,6 +23,7 @@ const config = {
     entry: {
         app: rootDir('src/app.js'),
         main: rootDir('src/main.js'),
+        'plugins/highlight.module': '@/plugins/highlight.module',
     },
     output: {
         filename: () => '[name].js',
@@ -70,6 +71,7 @@ function devConfig() {
     useIndexHtml()
     // useCopyPlugin()
     useCssLoader(true)
+    useWorker()
 
     return config
 }
@@ -93,6 +95,7 @@ function buildConfig(options) {
     // useCopyPlugin()
     useMomentLocalesPlugin()
     useCssLoader()
+    useWorker()
 
     return config
 }
@@ -144,11 +147,7 @@ function useCopyPlugin() {
 
 function useDevServer() {
     config.devServer = {
-        contentBase: [
-            rootDir('build'),
-            rootDir('public'),
-            //
-        ],
+        contentBase: [rootDir('public')],
         port: 9000,
         host: '0.0.0.0',
         hot: true,
@@ -158,7 +157,7 @@ function useDevServer() {
 function useMomentLocalesPlugin() {
     config.plugins.push(
         new MomentLocalesPlugin({
-            localesToKeep: ['es-us', 'ko'],
+            localesToKeep: ['ko'],
         })
     )
 }
@@ -190,5 +189,12 @@ function useBabel() {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+    })
+}
+
+function useWorker() {
+    config.module.rules.push({
+        test: /\.worker\.js$/,
+        use: ['worker-loader', 'babel-loader'],
     })
 }

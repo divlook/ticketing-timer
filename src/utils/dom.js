@@ -85,12 +85,17 @@ export function getSelects() {
     }
 }
 
-export function getTextareas() {
-    const list = Array.from(document.querySelectorAll('textarea'))
-    const map = new Map(list.map((el) => [el.id, el]))
+export function getEditors() {
+    /**
+     * @type { HTMLTextAreaElement }
+     */
+    const textarea = document.getElementById('editor')
+    const preview = document.getElementById('editor-preview')
+    const list = [textarea, preview]
 
     return {
         list,
-        editor: map.get('editor'),
+        textarea,
+        preview
     }
 }

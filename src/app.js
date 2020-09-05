@@ -7,11 +7,21 @@ import {
     getButtons,
     getInputs,
     getSelects,
-    getTextareas,
+    getEditors,
 } from '@/utils/dom'
-import { onSubmit, onReset, onClick, onChange } from '@/utils/dom.event'
+import {
+    onSubmit,
+    onReset,
+    onClick,
+    onChange,
+    onInput,
+    onKeydown,
+    onScroll,
+} from '@/utils/dom.event'
 import { createCode } from '@/utils'
 import '@/styles/style.css'
+import { codeHighlight } from '@/plugins/highlight'
+import { indentLine, outdentLine } from '@/utils/dom.action'
 
 document.addEventListener('DOMContentLoaded', init)
 
@@ -21,7 +31,7 @@ function init() {
     const input = getInputs()
     const button = getButtons()
     const select = getSelects()
-    const textarea = getTextareas()
+    const editor = getEditors()
 
     const state = {
         playing: false,
@@ -40,6 +50,9 @@ function init() {
     onReset(form, resetTicketing)
     onClick(button.cancel, stopTicketing)
     onChange(select.ticketingType, onTypeChanged)
+    onInput(editor.textarea, onTypingEditor)
+    onKeydown(editor.textarea, onTappingEditor)
+    onScroll(editor.textarea, onScrollEditor)
     setInitialValue()
 
     function startTicketing() {
@@ -97,11 +110,11 @@ function init() {
      */
     function setPlaying(playing) {
         state.playing = !!playing
-        textarea.editor.disabled = state.playing
+        editor.textarea.disabled = state.playing
 
-        if (textarea.editor.value && state.playing) {
+        if (editor.textarea.value && state.playing) {
             try {
-                runCode = createCode(textarea.editor.value)
+                runCode = createCode(editor.textarea.value)
                 return
             } catch (error) {
                 console.error(error)
@@ -169,6 +182,33 @@ function init() {
     function onTypeChanged(e) {
         const isCustom = e.target.value === 'custom'
 
-        textarea.editor.disabled = !isCustom
+        editor.textarea.disabled = !isCustom
+    }
+
+    function onTypingEditor(e) {
+        codeHighlight(editor.preview, e.target.value)
+    }
+
+    function onScrollEditor() {
+        const left = editor.textarea.scrollLeft
+        const top = editor.textarea.scrollTop
+
+        editor.preview.scroll(left, top)
+    }
+
+    function onTappingEditor(e) {
+        const shiftKey = e.shiftKey
+
+        if (e.key === 'Tab') {
+            e.preventDefault()
+
+            if (shiftKey) {
+                outdentLine(editor.textarea)
+            } else {
+                indentLine(editor.textarea)
+            }
+
+            codeHighlight(editor.preview, editor.textarea.value)
+        }
     }
 }
