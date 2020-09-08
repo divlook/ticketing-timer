@@ -1,5 +1,12 @@
 'use strict'
 
+/**
+ * @typedef Options
+ * @property { string } [outputPath]
+ * @property { string } [publicPath]
+ * @property { 'chrome' | 'web' } [envMode]
+ */
+
 const path = require('path')
 const { ProgressPlugin, DefinePlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -38,6 +45,9 @@ const config = {
     optimization: {},
 }
 
+/**
+ * @type { Options }
+ */
 const options = {
     outputPath: null,
     publicPath: null,
@@ -122,7 +132,7 @@ function useIndexHtml() {
             templateParameters: {
                 TITLE: title,
                 PUBLIC_PATH: publicPath,
-                ENV_MODE: options.envMode
+                ENV_MODE: options.envMode,
             },
             chunks: ['main', 'app'],
             chunksSortMode: 'manual',
@@ -225,7 +235,7 @@ function useWorker() {
 function useDefinePlugin() {
     config.plugins.push(
         new DefinePlugin({
-            ENV_MODE: JSON.stringify(options.envMode)
+            ENV_MODE: JSON.stringify(options.envMode),
         })
     )
 }
