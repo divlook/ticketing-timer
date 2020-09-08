@@ -142,13 +142,18 @@ function useIndexHtml() {
 }
 
 function useCopyPlugin() {
+    const isChromeMode = options.envMode === 'chrome'
+    const patterns = []
+
+    patterns.push(usePublicDir())
+
+    if (isChromeMode) {
+        patterns.push(useChromeManifest())
+    }
+
     config.plugins.push(
         new CopyPlugin({
-            patterns: [
-                usePublicDir(),
-                useManifestJson(),
-                //
-            ],
+            patterns,
         })
     )
 
@@ -166,9 +171,10 @@ function useCopyPlugin() {
         }
     }
 
-    function useManifestJson() {
+    function useChromeManifest() {
         return {
-            from: 'src/manifest.json',
+            from: 'src/manifest.chrome.json',
+            to: 'manifest.json',
             transform(content) {
                 const manifest = JSON.parse(content.toString())
                 manifest.version = version
