@@ -1,58 +1,24 @@
-import * as action from '@/utils/dom.action'
-
-export function getConsoleSection() {
-    const el = document.querySelector('section.console')
-
-    return {
-        el,
-        clear,
-        add,
-    }
-
-    function clear() {
-        action.empty(el)
-    }
-
-    function add(child) {
-        action.add(el, child)
+/**
+ * @param { HTMLElement } el
+ */
+export function empty(el) {
+    while (el.firstChild) {
+        el.removeChild(el.firstChild)
     }
 }
 
-export function getForm() {
-    const form = document.querySelector('form')
-
-    preventSubmit()
-
-    return document.querySelector('form')
-
-    function preventSubmit() {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault()
-        })
-    }
+/**
+ * @param { HTMLElement } el
+ * @param { HTMLElement } child
+ */
+export function add(el, child) {
+    el.appendChild(child)
 }
 
-export function getInputs() {
-    const list = Array.from(document.querySelectorAll('input'))
-    const map = new Map(list.map((el) => [el.id, el]))
-
-    return {
-        list,
-        date: map.get('date'),
-        time: map.get('time'),
-    }
-}
-
-export function getButtons() {
-    const list = Array.from(document.querySelectorAll('button'))
-    const map = new Map(list.map((el) => [el.id, el]))
-
-    return {
-        list,
-        reset: map.get('reset'),
-        cancel: map.get('cancel'),
-        submit: map.get('submit'),
-    }
+export function renderTemplate(template = '<div></div>') {
+    const container = document.createElement('div')
+    container.innerHTML = template
+    return container.children[0]
 }
 
 /**
@@ -75,27 +41,53 @@ export function createArticle(text = '', onSuccess = null) {
     return article
 }
 
-export function getSelects() {
-    const list = Array.from(document.querySelectorAll('select'))
-    const map = new Map(list.map((el) => [el.id, el]))
+/**
+ * 위치 지정 요소 가져오기
+ * @description `position`이 'static'이 아닌 요소, 즉 'relative', 'absolute', 'fixed', 'sticky'
+ * @param { HTMLElement } el
+ */
+export function getBestZIndexAmongChild(el) {
+    const children = Array.from(el.children)
+    const que = []
+    let bestZIndex = 0
 
-    return {
-        list,
-        ticketingType: map.get('ticketing-type'),
-    }
-}
+    children.forEach((child) => {
+        const _child = parseElement(child)
+        const zIndex = parseInt(_child.style.zIndex)
 
-export function getEditors() {
+        if (_child.style.position === 'static') {
+            que.push(
+                getBestZIndexAmongChild(child).then((childZIndex) => {
+                    if (childZIndex > bestZIndex) {
+                        bestZIndex = childZIndex
+                    }
+                })
+            )
+        }
+
+        if (isNaN(zIndex)) {
+            return
+        }
+
+        if (zIndex > bestZIndex) {
+            bestZIndex = zIndex
+        }
+    })
+
+    return Promise.all(que).then(() => bestZIndex)
+
     /**
-     * @type { HTMLTextAreaElement }
+     * @param { HTMLElement } el
      */
-    const textarea = document.getElementById('editor')
-    const preview = document.getElementById('editor-preview')
-    const list = [textarea, preview]
+    function parseElement(el) {
+        const style = window.getComputedStyle(el)
 
-    return {
-        list,
-        textarea,
-        preview
+        return {
+            el,
+            style: {
+                zIndex: style.zIndex,
+                position: style.position,
+            },
+        }
     }
 }

@@ -1,14 +1,18 @@
-import moment from 'moment'
+import moment from '@/plugins/moment'
 import TicketingTimer from '@/ticketing-timer'
+import '@/styles/app.scss'
 import {
-    createArticle,
-    getConsoleSection,
-    getForm,
-    getButtons,
-    getInputs,
-    getSelects,
-    getEditors,
-} from '@/utils/dom'
+    findConsoleSection,
+    findForm,
+    findButtons,
+    findInputs,
+    findSelects,
+    findEditors,
+} from '@/components/app/dom'
+import template from '@/components/app/template'
+import { codeHighlight } from '@/plugins/highlight'
+import { createCode } from '@/utils'
+import { renderTemplate, createArticle } from '@/utils/dom'
 import {
     onSubmit,
     onReset,
@@ -18,25 +22,54 @@ import {
     onKeydown,
     onScroll,
 } from '@/utils/dom.event'
-import { createCode } from '@/utils'
-import '@/styles/style.css'
-import { codeHighlight } from '@/plugins/highlight'
-import { indentLine, outdentLine } from '@/utils/dom.action'
+import { indentLine, outdentLine } from '@/utils/dom.textarea'
 
-document.addEventListener('DOMContentLoaded', init)
+/**
+ * @typedef State
+ * @property { boolean } playing 기본 값 : false
+ * @property { boolean } isModalMode 기본 값 : false
+ * @property { boolean } show modal 상태
+ * - 기본 값 : false
+ * - `mode`가 `modal`일 때만 유효함
+ * @property { number } zIndex z-index
+ * - 기본 값 : 1
+ * - `mode`가 `modal`일 때만 유효함
+ */
 
-function init() {
-    const consoleSection = getConsoleSection()
-    const form = getForm()
-    const input = getInputs()
-    const button = getButtons()
-    const select = getSelects()
-    const editor = getEditors()
+/**
+ * @typedef Props
+ * @property { 'modal' } [mode]
+ * @property { boolean } [show] modal 상태
+ * - 기본 값 : false
+ * - `true`일 경우 modal이 바로 보임
+ * - `mode`가 `modal`일 때만 유효함
+ * @property { number } [zIndex] z-index
+ * - 기본 값 : 1
+ * - `mode`가 `modal`일 때만 유효함
+ */
 
+/**
+ * App
+ * @param { Props } props
+ */
+async function App(props = {}) {
+    const el = renderTemplate(template())
+    const consoleSection = findConsoleSection(el)
+    const form = findForm(el)
+    const input = findInputs(el)
+    const button = findButtons(el)
+    const select = findSelects(el)
+    const editor = findEditors(el)
+
+    /**
+     * @type { State }
+     */
     const state = {
         playing: false,
+        isModalMode: false,
+        show: false,
+        zIndex: 1,
     }
-
     /**
      * @type { TicketingTimer }
      */
@@ -53,7 +86,22 @@ function init() {
     onInput(editor.textarea, onTypingEditor)
     onKeydown(editor.textarea, onTappingEditor)
     onScroll(editor.textarea, onScrollEditor)
+    initState(props)
+    initApp()
     setInitialValue()
+
+    return {
+        get el() {
+            return el
+        },
+        get state() {
+            return state
+        },
+        methods: {
+            show,
+            hide,
+        },
+    }
 
     function startTicketing() {
         consoleSection.clear()
@@ -211,4 +259,66 @@ function init() {
             codeHighlight(editor.preview, editor.textarea.value)
         }
     }
+
+    /**
+     * @param { Props } props
+     */
+    function initState(props) {
+        if (props?.mode === 'modal') {
+            state.isModalMode = true
+            state.show = props?.show ?? false
+            state.zIndex = props?.zIndex ?? 1
+        }
+    }
+
+    function initApp() {
+        const key = {
+            modal: 'app-mode-modal',
+        }
+
+        if (state.isModalMode) {
+            el.classList.add(key.modal)
+            el.style.zIndex = state.zIndex
+
+            if (state.show) {
+                show()
+            } else {
+                hide()
+            }
+        } else {
+            el.classList.remove(key.modal)
+            el.style.zIndex = null
+            show()
+        }
+    }
+
+    /**
+     * mode가 modal일 때 사용 가능
+     */
+    function show() {
+        const key = {
+            hide: 'app-state-hide',
+        }
+
+        state.show = true
+        if (el.classList.contains(key.hide)) {
+            el.classList.remove(key.hide)
+        }
+    }
+
+    /**
+     * mode가 modal일 때 사용 가능
+     */
+    function hide() {
+        const key = {
+            hide: 'app-state-hide',
+        }
+
+        state.show = false
+        if (!el.classList.contains(key.hide)) {
+            el.classList.add(key.hide)
+        }
+    }
 }
+
+export default App

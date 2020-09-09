@@ -1,0 +1,84 @@
+.ticketing-timer-app {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+    min-height: 480px;
+    max-width: 1024px;
+    max-height: 720px;
+    overflow: hidden;
+
+    section.console {
+        overflow-y: auto;
+        border: 1px solid #eee;
+        background-color: #fafafa;
+        padding: 4px;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    article {
+        white-space: pre-line;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .input-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+
+    .editor-container {
+        border: 1px solid #eee;
+        display: flex;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .editor-container [data-id="editor"] {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        padding: 4px;
+        margin: 0;
+        border: 0;
+        min-height: 100px;
+        max-height: 300px;
+        background: transparent;
+        color: transparent;
+        color: rgba(255, 255, 255, 0.1);
+        caret-color: rgba(255, 255, 255, 0.5);
+        font-size: 1em;
+        white-space: pre;
+    }
+
+    .editor-container [data-id="editor-preview"] {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        padding: 4px;
+        margin: 0;
+        font-size: 1em;
+        white-space: pre;
+    }
+
+    &.app-mode-modal {
+        position: fixed;
+        background-color: rgba(0,0,0,0.5);
+        left: 30%;
+        right: 30%;
+        top: 30%;
+        bottom: 30%;
+    }
+
+    &.app-state-hide {
+        display: none;
+    }
+}

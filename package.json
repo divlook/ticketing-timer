@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/divlook/ticketing-timer#readme",
   "license": "MIT",
-  "main": "dist/ticketing.js",
   "scripts": {
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
@@ -44,6 +43,9 @@
     "moment": "^2.27.0",
     "moment-locales-webpack-plugin": "^1.2.0",
     "postcss-loader": "^3.0.0",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",

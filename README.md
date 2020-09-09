@@ -28,7 +28,7 @@ KTX 또는 SRT의 홈페이지에 접속 후 타이머를 실행하면, 예약�
 3. 개발자 도구 실행
    - Window: F12
    - OSX: ⌥ + ⌘ + i (option + command + i)
-4. [소스](./dist/ticketing-timer.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
+4. [소스](./dist/ticketing-timer.script.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
 5. [예제](#예제) 소스를 복사하여 Console 탭에 붙여넣기
 6. `type`과 `datetime` 수정 후 `Enter`
 
@@ -64,6 +64,14 @@ const timer = new TicketingTimer(() => {
     console.log('여기에 커스텀 코드 추가')
 })
 timer.start('2020-09-08 07:00:00') // 날짜 입력
+```
+
+#### (임시로 추가)
+
+```js
+var imported = document.createElement("script");
+imported.src = "https://divlook.github.io/ticketing-timer/ticketing-timer.script.js";
+document.getElementsByTagName("head")[0].appendChild(imported);
 ```
 
 ### 변수

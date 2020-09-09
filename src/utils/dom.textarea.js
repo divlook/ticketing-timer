@@ -1,21 +1,4 @@
 /**
-* @param { HTMLElement } el
- */
-export function empty(el) {
-    while (el.firstChild) {
-        el.removeChild(el.firstChild)
-    }
-}
-
-/**
-* @param { HTMLElement } el
-* @param { HTMLElement } child
- */
-export function add(el, child) {
-    el.appendChild(child)
-}
-
-/**
  * @param { HTMLInputElement | HTMLTextAreaElement } el
  */
 export function getCurrentLine(el) {
@@ -40,7 +23,6 @@ export function getCurrentLine(el) {
 
         return lastIndex + startIndex
     }
-
 }
 
 /**
@@ -54,8 +36,15 @@ export function indentLine(el, tabSize = 4) {
     const nextWhitespace = (Math.floor(whitespace / tabSize) + 1) * tabSize
     const replacement = Array(nextWhitespace).fill(' ').join('')
 
-    el.setRangeText(replacement, currentLine.start, currentLine.start + whitespace)
-    el.setSelectionRange(currentLine.start + nextWhitespace, currentLine.start + nextWhitespace)
+    el.setRangeText(
+        replacement,
+        currentLine.start,
+        currentLine.start + whitespace
+    )
+    el.setSelectionRange(
+        currentLine.start + nextWhitespace,
+        currentLine.start + nextWhitespace
+    )
 }
 
 /**
@@ -66,9 +55,17 @@ export function outdentLine(el, tabSize = 4) {
     const currentLine = getCurrentLine(el)
     const match = currentLine.search.match(/^\s+/)
     const whitespace = match ? match[0].length : 0
-    const nextWhitespace = (Math.ceil((whitespace || 1) / tabSize) - 1) * tabSize
+    const nextWhitespace =
+        (Math.ceil((whitespace || 1) / tabSize) - 1) * tabSize
     const replacement = Array(nextWhitespace).fill(' ').join('')
 
-    el.setRangeText(replacement, currentLine.start, currentLine.start + whitespace)
-    el.setSelectionRange(currentLine.start + nextWhitespace, currentLine.start + nextWhitespace)
+    el.setRangeText(
+        replacement,
+        currentLine.start,
+        currentLine.start + whitespace
+    )
+    el.setSelectionRange(
+        currentLine.start + nextWhitespace,
+        currentLine.start + nextWhitespace
+    )
 }

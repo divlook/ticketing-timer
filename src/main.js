@@ -1,8 +1,9 @@
-import '@/plugins/moment'
-import TicketingTimer from '@/ticketing-timer'
+import '@/styles/main.css'
+import App from '@/components/app'
 
-if (window) {
-    window['TicketingTimer'] = TicketingTimer
-}
+const app = App()
+document.addEventListener('DOMContentLoaded', async () => {
+    const { el } = await app
 
-export default TicketingTimer
+    document.querySelector('#app').appendChild(el)
+})

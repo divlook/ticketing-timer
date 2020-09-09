@@ -2,6 +2,7 @@
 
 /**
  * @typedef Options
+ * @property { string } [title]
  * @property { string } [outputPath]
  * @property { string } [publicPath]
  * @property { 'chrome' | 'web' } [envMode]
@@ -15,10 +16,13 @@ const CopyPlugin = require('copy-webpack-plugin')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { version } = require('./package.json')
-
 const npmLifecycleEvent = process.env.npm_lifecycle_event
-const isDevPhase = npmLifecycleEvent === 'dev'
-const isBuildPhase = npmLifecycleEvent === 'build'
+
+const state = {
+    isDevPhase: npmLifecycleEvent === 'dev',
+    isBuildPhase: npmLifecycleEvent === 'build',
+    isChromeMode: false,
+}
 
 const config = {
     stats: 'minimal',
@@ -26,13 +30,17 @@ const config = {
         alias: {
             '@': rootDir('src'),
         },
-        extensions: ['.js', '.json', '.ejs', 'html', '.css'],
+        extensions: [
+            '.js',
+            '.json',
+            '.ejs',
+            '.html',
+            '.css',
+            '.scss',
+            //
+        ],
     },
-    entry: {
-        app: rootDir('src/app.js'),
-        main: rootDir('src/main.js'),
-        'plugins/highlight.module': '@/plugins/highlight.module',
-    },
+    entry: {},
     output: {
         filename: () => '[name].js',
         path: rootDir('build'),
@@ -49,15 +57,18 @@ const config = {
  * @type { Options }
  */
 const options = {
+    title: 'Ticketing Timer',
     outputPath: null,
     publicPath: null,
     envMode: setEnvMode(),
 }
 
 module.exports = function (env, argv) {
+    options.title = isNullish(argv['title'], options.title)
     options.outputPath = isNullish(argv['output-path'])
     options.publicPath = isNullish(argv['public-path'])
     options.envMode = setEnvMode(argv['env-mode'])
+    state.isChromeMode = options.envMode === 'chrome'
 
     useDefinePlugin()
     useBabel()
@@ -69,11 +80,11 @@ module.exports = function (env, argv) {
         config.output.publicPath = options.publicPath
     }
 
-    if (isDevPhase) {
+    if (state.isDevPhase) {
         return devConfig()
     }
 
-    if (isBuildPhase) {
+    if (state.isBuildPhase) {
         return buildConfig()
     }
 
@@ -85,6 +96,7 @@ function rootDir(...p) {
 }
 
 function devConfig() {
+    useEntry()
     useDevServer()
     useCssLoader(true)
 
@@ -93,18 +105,13 @@ function devConfig() {
 
 function buildConfig() {
     config.plugins.push(new CleanWebpackPlugin())
-    config.output.filename = (pathData) => {
-        if (pathData.chunk.name === 'main') {
-            return 'ticketing-timer.js'
-        }
-
-        return '[name].js'
-    }
+    config.output.filename = () => '[name].js'
 
     if (options.outputPath) {
         config.output.path = rootDir(options.outputPath)
     }
 
+    useEntry()
     useMomentLocalesPlugin()
     useCssLoader()
 
@@ -119,22 +126,42 @@ function isNullish(value, then = null) {
     return value
 }
 
+function useEntry() {
+    if (state.isChromeMode) {
+        config.entry = {
+            'chrome/content-script': rootDir('src/chrome/content-script.js'),
+            'plugins/highlight.module': '@/plugins/highlight.module',
+        }
+        return
+    }
+
+    config.entry = {
+        main: rootDir('src/main.js'),
+        'ticketing-timer.module': rootDir('src/ticketing-timer.js'),
+        'ticketing-timer.script': rootDir('src/ticketing-timer.script.js'),
+        'plugins/highlight.module': '@/plugins/highlight.module',
+    }
+}
+
 function useIndexHtml() {
     const publicPath = config.output.publicPath
-    const title = 'Ticketing Timer'
+
+    if (state.isChromeMode) {
+        return
+    }
 
     config.plugins.push(
         new HtmlWebpackPlugin({
-            title,
+            title: options.title,
             inject: 'head',
             template: rootDir('public/index.ejs'),
             minify: false,
             templateParameters: {
-                TITLE: title,
+                TITLE: options.title,
                 PUBLIC_PATH: publicPath,
                 ENV_MODE: options.envMode,
             },
-            chunks: ['main', 'app'],
+            chunks: ['main'],
             chunksSortMode: 'manual',
             hash: true,
         })
@@ -142,12 +169,11 @@ function useIndexHtml() {
 }
 
 function useCopyPlugin() {
-    const isChromeMode = options.envMode === 'chrome'
     const patterns = []
 
     patterns.push(usePublicDir())
 
-    if (isChromeMode) {
+    if (state.isChromeMode) {
         patterns.push(useChromeManifest())
     }
 
@@ -173,7 +199,7 @@ function useCopyPlugin() {
 
     function useChromeManifest() {
         return {
-            from: 'src/manifest.chrome.json',
+            from: 'src/chrome/manifest.json',
             to: 'manifest.json',
             transform(content) {
                 const manifest = JSON.parse(content.toString())
@@ -202,25 +228,38 @@ function useMomentLocalesPlugin() {
 }
 
 function useCssLoader(isDev = false) {
-    config.plugins.push(
-        new MiniCssExtractPlugin({
-            filename: 'styles/[name].css',
-        })
-    )
+    if (!isDev) {
+        config.plugins.push(
+            new MiniCssExtractPlugin({
+                filename: 'styles/[name].css',
+            })
+        )
+    }
 
     config.module.rules.push({
         test: /\.css$/i,
         use: [
-            {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                    hmr: isDev,
-                },
-            },
+            useMiniCssExtractPlugin(isDev),
             'css-loader',
             'postcss-loader',
+            //
         ],
     })
+
+    config.module.rules.push({
+        test: /\.s[ac]ss$/i,
+        use: [
+            useMiniCssExtractPlugin(isDev),
+            'css-loader',
+            'sass-loader',
+            'postcss-loader',
+            //
+        ],
+    })
+
+    function useMiniCssExtractPlugin(isDev = false) {
+        return isDev ? 'style-loader' : MiniCssExtractPlugin.loader
+    }
 }
 
 function useBabel() {
@@ -242,6 +281,7 @@ function useDefinePlugin() {
     config.plugins.push(
         new DefinePlugin({
             ENV_MODE: JSON.stringify(options.envMode),
+            TITLE: JSON.stringify(options.title),
         })
     )
 }
