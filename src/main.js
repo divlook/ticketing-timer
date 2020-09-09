@@ -1,9 +1,10 @@
 import '@/styles/main.css'
 import App from '@/components/app'
+import { getBestZIndexAmongChild } from '@/utils/dom.js'
 
-const app = App()
 document.addEventListener('DOMContentLoaded', async () => {
-    const { el } = await app
+    const bestZIndex = await getBestZIndexAmongChild(document.body)
+    const app = await App({ mode: 'modal', show: true, zIndex: bestZIndex + 1 })
 
-    document.querySelector('#app').appendChild(el)
+    document.body.appendChild(app.el)
 })

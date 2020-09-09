@@ -1,11 +1,11 @@
 .ticketing-timer-app {
     display: flex;
     flex-direction: column;
-    min-width: 400px;
-    min-height: 480px;
-    max-width: 1024px;
-    max-height: 720px;
+    min-width: 240px;
+    min-height: 420px;
     overflow: hidden;
+    padding: 20px;
+    background-color: #fff;
 
     section.console {
         overflow-y: auto;
@@ -71,14 +71,24 @@
 
     &.app-mode-modal {
         position: fixed;
-        background-color: rgba(0,0,0,0.5);
-        left: 30%;
-        right: 30%;
-        top: 30%;
-        bottom: 30%;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        margin: 20px;
     }
 
     &.app-state-hide {
         display: none;
+    }
+
+    @media (min-width: 480px) {
+        &.app-mode-modal {
+            max-width: 300px;
+            max-height: 530px;
+            margin: auto;
+        }
     }
 }

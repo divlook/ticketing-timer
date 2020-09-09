@@ -7,7 +7,7 @@ window.addEventListener('load', init)
 
 async function init() {
     const bestZIndex = await getBestZIndexAmongChild(document.body)
-    const app = await App({ mode: 'modal', show: true, zIndex: bestZIndex })
+    const app = await App({ mode: 'modal', show: true, zIndex: bestZIndex + 1 })
 
     document.body.appendChild(app.el)
 
