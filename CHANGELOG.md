@@ -1,3 +1,13 @@
+## [1.4.1](https://github.com/divlook/ticketing-timer/compare/v1.4.0...v1.4.1) (2020-09-10)
+
+
+### Bug Fixes
+
+* :bug: Auto Release할 때 커밋 옵션 수정 ([be13e66](https://github.com/divlook/ticketing-timer/commit/be13e666a72d886db6a530fd7330483adedad682))
+* :wrench: chrome 권한 수정 ([dfdc84a](https://github.com/divlook/ticketing-timer/commit/dfdc84af4e3394de71ccb48514ce8384b4c4fd82))
+
+
+
 # [1.4.0](https://github.com/divlook/ticketing-timer/compare/v1.3.0...v1.4.0) (2020-09-10)
 
 
@@ -44,16 +54,6 @@
 ### Features
 
 * :rocket: build할 때 index.html 생성 ([c1dbbe0](https://github.com/divlook/ticketing-timer/commit/c1dbbe0d6acfcddcbdaeb36849ac72c76db6d51e))
-
-
-
-# [1.1.0](https://github.com/divlook/ticketing-timer/compare/v1.0.0...v1.1.0) (2020-09-03)
-
-
-### Features
-
-* option 추가 ([c7cc158](https://github.com/divlook/ticketing-timer/commit/c7cc1584256f2900211f0952c9d60f635b6fc591))
-* 예제 파일 업데이트 ([1178a2c](https://github.com/divlook/ticketing-timer/commit/1178a2cfa485f5c862b8e5ed4a1a97909a0e40ea))
 
 
 
