@@ -129,6 +129,7 @@ function isNullish(value, then = null) {
 function useEntry() {
     if (state.isChromeMode) {
         config.entry = {
+            'chrome/background': rootDir('src/chrome/background.js'),
             'chrome/content-script': rootDir('src/chrome/content-script.js'),
             'plugins/highlight.module': '@/plugins/highlight.module',
         }
