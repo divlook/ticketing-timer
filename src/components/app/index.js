@@ -9,6 +9,7 @@ import {
     findSelects,
     findEditors,
     findContainer,
+    findModalBackdrop,
 } from '@/components/app/dom'
 import template from '@/components/app/template'
 import { codeHighlight } from '@/plugins/highlight'
@@ -77,6 +78,7 @@ async function App(props = {}) {
     const select = findSelects(el)
     const editor = findEditors(el)
     const container = findContainer(el)
+    const modalBackdrop = findModalBackdrop(el)
 
     /**
      * @type { State }
@@ -100,6 +102,7 @@ async function App(props = {}) {
     onReset(form, resetTicketing)
     onClick(button.cancel, stopTicketing)
     onClick(button.hide, hide)
+    onClick(modalBackdrop, hide)
     onChange(select.ticketingType, onTypeChanged)
     onInput(editor.textarea, onTypingEditor)
     onKeydown(editor.textarea, onTappingEditor)

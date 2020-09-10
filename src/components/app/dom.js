@@ -110,3 +110,15 @@ export function findContainer(root) {
 
     return el
 }
+
+/**
+ * @param { HTMLElement } root
+ */
+export function findModalBackdrop(root) {
+    /**
+     * @type { HTMLDivElement }
+     */
+    const el = root.querySelector('.tta-modal-backdrop')
+
+    return el
+}

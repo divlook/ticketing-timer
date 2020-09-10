@@ -102,6 +102,7 @@
             background-color: rgba($color: #000, $alpha: 0.2);
             animation-duration: 0.3s;
             animation-play-state: paused;
+            cursor: pointer;
         }
 
         &.tta-state-hidden {
