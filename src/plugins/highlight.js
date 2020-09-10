@@ -11,8 +11,10 @@ const state = {
     elList: [],
 }
 
+const isChromeMode = ENV_MODE === 'chrome'
+
 window.addEventListener('load', () => {
-    if (Worker) {
+    if (Worker && !isChromeMode) {
         worker = new HighlightWorker()
         worker.addEventListener('message', (event) => {
             if (state.elList.length === 0) {

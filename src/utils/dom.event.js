@@ -84,3 +84,13 @@ export function onKeydown(el, cb, option) {
 export function onScroll(el, cb, option) {
     useEventListener(el, 'scroll', cb, option)
 }
+
+/**
+ * On Animationend
+ * @param { HTMLElement } el
+ * @param { (e: Event) => void } cb
+ * @param { any } [option]
+ */
+export function onAnimationend(el, cb, option) {
+    useEventListener(el, 'animationend', cb, option)
+}

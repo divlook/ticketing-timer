@@ -3,7 +3,9 @@
 ![Auto Release](https://github.com/divlook/ticketing-timer/workflows/Auto%20Release/badge.svg)
 ![Create Pages](https://github.com/divlook/ticketing-timer/workflows/Create%20Pages/badge.svg)
 
-티켓팅(KTX, SRT, 기타)을 위한 프로젝트입니다.
+티켓팅(KTX, SRT, 기타)을 위한 앱입니다.
+
+KTX 또는 SRT의 홈페이지에 접속 후 타이머를 실행하면, 예약된 시간에 자동으로 명절 승차권 예약하기 버튼을 클릭합니다.
 
 ## 지원 사이트
 
@@ -26,8 +28,8 @@
 3. 개발자 도구 실행
    - Window: F12
    - OSX: ⌥ + ⌘ + i (option + command + i)
-4. [소스](./dist/ticketing-timer.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
-5. [예제](#예제) 소스를 복사하여 Console 탭에 붙여넣기
+4. [소스(dist/ticketing-timer.script.js)](./dist/ticketing-timer.script.js)를 복사하여 Console 탭에 붙여넣고 `Enter`
+5. [#예제](#예제) 소스를 복사하여 Console 탭에 붙여넣기
 6. `type`과 `datetime` 수정 후 `Enter`
 
 ### Chrome 확장 프로그램
