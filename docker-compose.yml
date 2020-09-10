@@ -1,7 +1,7 @@
 version: "3"
 services:
     app:
-        image: "divlook/node:v1.0.2"
+        image: "divlook/node:latest"
         environment:
             GIT_USER_NAME: "divlook"
             GIT_USER_EMAIL: "uihyeon.cha@gmail.com"
