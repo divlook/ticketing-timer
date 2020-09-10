@@ -1,94 +1,183 @@
 .ticketing-timer-app {
-    display: flex;
-    flex-direction: column;
-    min-width: 240px;
-    min-height: 420px;
-    overflow: hidden;
-    padding: 20px;
-    background-color: #fff;
+    .tta-container {
+        display: flex;
+        flex-direction: column;
+        min-width: 240px;
+        min-height: 420px;
+        overflow: hidden;
+        padding: 20px;
+        background-color: #fff;
 
-    section.console {
-        overflow-y: auto;
-        border: 1px solid #eee;
-        background-color: #fafafa;
-        padding: 4px;
+        .tta-console {
+            overflow-y: auto;
+            border: 1px solid #eee;
+            background-color: #fafafa;
+            padding: 4px;
 
-        &:empty {
-            display: none;
+            &:empty {
+                display: none;
+            }
+        }
+
+        article {
+            white-space: pre-line;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .tta-input-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+        }
+
+        .tta-editor-container {
+            border: 1px solid #eee;
+            display: flex;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .tta-editor-container [data-id="editor"] {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            padding: 4px;
+            margin: 0;
+            border: 0;
+            min-height: 100px;
+            max-height: 300px;
+            background: transparent;
+            color: transparent;
+            color: rgba(255, 255, 255, 0.1);
+            caret-color: rgba(255, 255, 255, 0.5);
+            font-size: 1em;
+            white-space: pre;
+        }
+
+        .tta-editor-container [data-id="editor-preview"] {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1;
+            padding: 4px;
+            margin: 0;
+            font-size: 1em;
+            white-space: pre;
         }
     }
 
-    article {
-        white-space: pre-line;
-    }
-
-    .text-right {
-        text-align: right;
-    }
-
-    .input-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 10px;
-    }
-
-    .editor-container {
-        border: 1px solid #eee;
-        display: flex;
-        position: relative;
-        font-size: 14px;
-    }
-
-    .editor-container [data-id="editor"] {
-        position: relative;
-        z-index: 2;
-        flex: 1;
-        padding: 4px;
-        margin: 0;
-        border: 0;
-        min-height: 100px;
-        max-height: 300px;
-        background: transparent;
-        color: transparent;
-        color: rgba(255, 255, 255, 0.1);
-        caret-color: rgba(255, 255, 255, 0.5);
-        font-size: 1em;
-        white-space: pre;
-    }
-
-    .editor-container [data-id="editor-preview"] {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 1;
-        padding: 4px;
-        margin: 0;
-        font-size: 1em;
-        white-space: pre;
-    }
-
-    &.app-mode-modal {
+    &.tta-mode-modal {
         position: fixed;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
-        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
-        margin: 20px;
-    }
 
-    &.app-state-hide {
-        display: none;
+        .tta-container {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 2;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin: 20px;
+            animation-duration: 0.3s;
+            animation-play-state: paused;
+        }
+
+        .tta-modal-backdrop {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1;
+            background-color: rgba($color: #000, $alpha: 0.2);
+            animation-duration: 0.3s;
+            animation-play-state: paused;
+        }
+
+        &.tta-state-hidden {
+            display: none;
+        }
+
+        &.tta-state-hide {
+            .tta-container,
+            .tta-modal-backdrop {
+                animation-play-state: running;
+            }
+            .tta-container {
+                animation-name: tta-hide-animation, tta-down-animation;
+            }
+            .tta-modal-backdrop {
+                animation-name: tta-hide-animation;
+            }
+        }
+
+        &.tta-state-show {
+            .tta-container,
+            .tta-modal-backdrop {
+                animation-play-state: running;
+            }
+            .tta-container {
+                animation-name: tta-show-animation, tta-up-animation;
+            }
+            .tta-modal-backdrop {
+                animation-name: tta-show-animation;
+            }
+        }
     }
 
     @media (min-width: 480px) {
-        &.app-mode-modal {
-            max-width: 300px;
-            max-height: 530px;
-            margin: auto;
+        &.tta-mode-modal {
+            .tta-container {
+                max-width: 300px;
+                max-height: 530px;
+                margin: auto;
+            }
+        }
+    }
+
+    @keyframes tta-hide-animation {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes tta-show-animation {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes tta-up-animation {
+        0% {
+            transform: translateY(10%);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes tta-down-animation {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(10%);
         }
     }
 }

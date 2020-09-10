@@ -4,7 +4,7 @@ import * as dom from '@/utils/dom'
  * @param { HTMLElement } root
  */
 export function findConsoleSection(root) {
-    const el = root.querySelector('section.console')
+    const el = root.querySelector('.tta-console')
 
     return {
         el,
@@ -61,6 +61,7 @@ export function findButtons(root) {
 
     return {
         list,
+        hide: map.get('hide'),
         reset: map.get('reset'),
         cancel: map.get('cancel'),
         submit: map.get('submit'),
@@ -96,4 +97,16 @@ export function findEditors(root) {
         textarea,
         preview,
     }
+}
+
+/**
+ * @param { HTMLElement } root
+ */
+export function findContainer(root) {
+    /**
+     * @type { HTMLDivElement }
+     */
+    const el = root.querySelector('.tta-container')
+
+    return el
 }

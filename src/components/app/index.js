@@ -8,6 +8,7 @@ import {
     findInputs,
     findSelects,
     findEditors,
+    findContainer,
 } from '@/components/app/dom'
 import template from '@/components/app/template'
 import { codeHighlight } from '@/plugins/highlight'
@@ -21,6 +22,7 @@ import {
     onInput,
     onKeydown,
     onScroll,
+    onAnimationend,
 } from '@/utils/dom.event'
 import { indentLine, outdentLine } from '@/utils/dom.textarea'
 
@@ -49,6 +51,20 @@ import { indentLine, outdentLine } from '@/utils/dom.textarea'
  */
 
 /**
+ * ClassName
+ */
+const classes = {
+    state: {
+        show: 'tta-state-show',
+        hide: 'tta-state-hide',
+        hidden: 'tta-state-hidden',
+    },
+    mode: {
+        modal: 'tta-mode-modal',
+    },
+}
+
+/**
  * App
  * @param { Props } props
  */
@@ -60,6 +76,7 @@ async function App(props = {}) {
     const button = findButtons(el)
     const select = findSelects(el)
     const editor = findEditors(el)
+    const container = findContainer(el)
 
     /**
      * @type { State }
@@ -82,10 +99,12 @@ async function App(props = {}) {
     onSubmit(form, startTicketing)
     onReset(form, resetTicketing)
     onClick(button.cancel, stopTicketing)
+    onClick(button.hide, hide)
     onChange(select.ticketingType, onTypeChanged)
     onInput(editor.textarea, onTypingEditor)
     onKeydown(editor.textarea, onTappingEditor)
     onScroll(editor.textarea, onScrollEditor)
+    onAnimationend(container, onModalHidden)
     initState(props)
     initApp()
     setInitialValue()
@@ -260,6 +279,21 @@ async function App(props = {}) {
         }
     }
 
+    function onModalHidden() {
+        if (!state.isModalMode && state.show) {
+            return
+        }
+
+        setClasses(classes.state.show, false)
+
+        if (state.show) {
+            return
+        }
+
+        setClasses(classes.state.hide, false)
+        setClasses(classes.state.hidden, true)
+    }
+
     /**
      * @param { Props } props
      */
@@ -272,51 +306,56 @@ async function App(props = {}) {
     }
 
     function initApp() {
-        const key = {
-            modal: 'app-mode-modal',
-        }
-
         if (state.isModalMode) {
-            el.classList.add(key.modal)
+            setClasses(classes.mode.modal, true)
             el.style.zIndex = state.zIndex
 
             if (state.show) {
-                show()
+                setClasses(classes.state.show, true)
             } else {
-                hide()
+                setClasses(classes.state.hidden, true)
             }
-        } else {
-            el.classList.remove(key.modal)
-            el.style.zIndex = null
-            show()
+
+            return
         }
+
+        setClasses(classes.mode.modal, false)
+        el.style.zIndex = null
+        show()
     }
 
     /**
      * mode가 modal일 때 사용 가능
      */
     function show() {
-        const key = {
-            hide: 'app-state-hide',
-        }
-
         state.show = true
-        if (el.classList.contains(key.hide)) {
-            el.classList.remove(key.hide)
-        }
+
+        setClasses(classes.state.hidden, false)
+        setClasses(classes.state.show, true)
     }
 
     /**
      * mode가 modal일 때 사용 가능
      */
     function hide() {
-        const key = {
-            hide: 'app-state-hide',
-        }
-
         state.show = false
-        if (!el.classList.contains(key.hide)) {
-            el.classList.add(key.hide)
+
+        setClasses(classes.state.hide, true)
+
+        setTimeout(() => {
+            if (el.classList.contains(classes.state.hidden)) {
+                onModalHidden()
+            }
+        }, 400)
+    }
+
+    function setClasses(className = null, isAdd = false) {
+        if (isAdd) {
+            if (!el.classList.contains(className)) {
+                el.classList.add(className)
+            }
+        } else {
+            el.classList.remove(className)
         }
     }
 }
