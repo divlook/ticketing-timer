@@ -41,6 +41,7 @@ jobs:
           file_pattern: dist/*
           commit_user_name: divlook
           commit_user_email: uihyeon.cha@gmail.com
+          commit_options: '-a'
           push_options: '--force'
           skip_dirty_check: true
 
