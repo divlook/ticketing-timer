@@ -43,6 +43,8 @@
     "moment": "^2.27.0",
     "moment-locales-webpack-plugin": "^1.2.0",
     "postcss-loader": "^3.0.0",
+    "postcss-scss": "^2.1.1",
+    "postcss-strip-inline-comments": "^0.1.5",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
