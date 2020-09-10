@@ -37,6 +37,10 @@ import { indentLine, outdentLine } from '@/utils/dom.textarea'
  * @property { number } zIndex z-index
  * - 기본 값 : 1
  * - `mode`가 `modal`일 때만 유효함
+ * @property { number } modalAnimationDuration 모달의 애니메이션 길이
+ * - 단위 : ms
+ * - 기본 값 : 300
+ * - `mode`가 `modal`일 때만 유효함
  */
 
 /**
@@ -48,6 +52,10 @@ import { indentLine, outdentLine } from '@/utils/dom.textarea'
  * - `mode`가 `modal`일 때만 유효함
  * @property { number } [zIndex] z-index
  * - 기본 값 : 1
+ * - `mode`가 `modal`일 때만 유효함
+ * @property { number } [modalAnimationDuration] 모달의 애니메이션 길이
+ * - 단위 ms
+ * - 기본 값 : 300
  * - `mode`가 `modal`일 때만 유효함
  */
 
@@ -88,6 +96,7 @@ async function App(props = {}) {
         isModalMode: false,
         show: false,
         zIndex: 1,
+        modalAnimationDuration: 300,
     }
     /**
      * @type { TicketingTimer }
@@ -305,13 +314,17 @@ async function App(props = {}) {
             state.isModalMode = true
             state.show = props?.show ?? false
             state.zIndex = props?.zIndex ?? 1
+            state.modalAnimationDuration = props?.modalAnimationDuration ?? 300
         }
     }
 
     function initApp() {
         if (state.isModalMode) {
-            setClasses(classes.mode.modal, true)
             el.style.zIndex = state.zIndex
+            container.style.animationDuration = `${state.modalAnimationDuration}ms`
+            modalBackdrop.style.animationDuration = `${state.modalAnimationDuration}ms`
+
+            setClasses(classes.mode.modal, true)
 
             if (state.show) {
                 setClasses(classes.state.show, true)
@@ -349,7 +362,7 @@ async function App(props = {}) {
             if (el.classList.contains(classes.state.hidden)) {
                 onModalHidden()
             }
-        }, 400)
+        }, state.modalAnimationDuration + 100)
     }
 
     function setClasses(className = null, isAdd = false) {
