@@ -105,7 +105,12 @@ function devConfig() {
 
 function buildConfig() {
     config.plugins.push(new CleanWebpackPlugin())
-    config.output.filename = () => '[name].js'
+    config.output.filename = (pathData) => {
+        if (pathData.chunk.name === 'main') {
+            return '[name].[contenthash].js'
+        }
+        return '[name].js'
+    }
 
     if (options.outputPath) {
         config.output.path = rootDir(options.outputPath)
@@ -164,7 +169,6 @@ function useIndexHtml() {
             },
             chunks: ['main'],
             chunksSortMode: 'manual',
-            hash: true,
         })
     )
 }
@@ -232,7 +236,7 @@ function useCssLoader(isDev = false) {
     if (!isDev) {
         config.plugins.push(
             new MiniCssExtractPlugin({
-                filename: 'styles/[name].css',
+                filename: 'styles/[name].[contenthash].css',
             })
         )
     }
