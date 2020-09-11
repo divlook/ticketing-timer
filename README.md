@@ -3,7 +3,7 @@
 ![Auto Release](https://github.com/divlook/ticketing-timer/workflows/Auto%20Release/badge.svg)
 ![Create Pages](https://github.com/divlook/ticketing-timer/workflows/Create%20Pages/badge.svg)
 
-티켓팅(KTX, SRT, 기타)을 위한 앱입니다.
+티켓팅(KTX, SRT, 기타)을 위한 크롬 확장 앱입니다.
 
 KTX 또는 SRT의 홈페이지에 접속 후 타이머를 실행하면, 예약된 시간에 자동으로 명절 승차권 예약하기 버튼을 클릭합니다.
 
@@ -21,7 +21,24 @@ KTX 또는 SRT의 홈페이지에 접속 후 타이머를 실행하면, 예약�
 
 ## 사용 방법
 
+### Chrome 확장 프로그램
+
+Chrome 브라우저의 확장 앱입니다. 아직 미완성이라 사용이 불편하실 수 있습니다.
+
+앱 버전 v1.4.1 이상을 사용하셔야 됩니다. 이전 버전은 정상적으로 동작하지 않습니다.
+
+- 설치 : [Chrome 웹 스토어](https://chrome.google.com/webstore/detail/ticketing-timer/aglloefolpfdegbjigcdabgjonfdcmlh)에서 `Chrome에 추가` 버튼을 클릭합니다.
+- 티켓팅할 사이트에 접속합니다.
+- 툴바에 해당 앱의 아이콘을 클릭하면 타이머가 나타납니다.
+- 날짜와 시간을 입력합니다.
+- 타이머 종료 후 실행할 코드를 입력합니다. (추후 코드를 직접 입력하지 않고 자동으로 생성되게 변경될 예정입니다. 기능 추가 후 코드 입력 창은 없어지거나 기능이 축소될 예정입니다.)
+- 기다립니다.
+
+> Chrome 웹 스토어 : https://bit.ly/3hjbElk
+
 ### Chrome Console
+
+Chrome 브라우저의 콘솔에 코드를 직접 입력해서 실행하는 방법입니다.
 
 1. Chrome 브라우저 실행. (또는 IE를 제외한 최신 버전의 브라우저)
 2. 티켓팅 사이트 접속.
@@ -32,17 +49,11 @@ KTX 또는 SRT의 홈페이지에 접속 후 타이머를 실행하면, 예약�
 5. [#예제](#예제) 소스를 복사하여 Console 탭에 붙여넣기
 6. `type`과 `datetime` 수정 후 `Enter`
 
-### Chrome 확장 프로그램
-
-아직 미완성이라 사용이 불편하실 수 있습니다.
-
-https://bit.ly/3hjbElk
-
 ## 주의 사항
 
 티켓팅 사이트가 업데이트 되어 이 소스가 동작하지 않을 수 있습니다.
 
-반드시 사용 전에 테스트해주세요.
+실제로 사용하기 전에 반드시 동작 여부를 테스트해주세요.
 
 ## Docs
 
