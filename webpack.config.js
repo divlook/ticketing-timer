@@ -49,7 +49,7 @@ const config = {
     module: {
         rules: [],
     },
-    plugins: [new ProgressPlugin()],
+    plugins: [],
     optimization: {},
 }
 
@@ -69,6 +69,8 @@ module.exports = function (env, argv) {
     options.publicPath = isNullish(argv['public-path'])
     options.envMode = setEnvMode(argv['env-mode'])
     state.isChromeMode = options.envMode === 'chrome'
+
+    config.plugins.push(new ProgressPlugin())
 
     useDefinePlugin()
     useBabel()
@@ -236,7 +238,9 @@ function useCssLoader(isDev = false) {
     if (!isDev) {
         config.plugins.push(
             new MiniCssExtractPlugin({
-                filename: 'styles/[name].[contenthash].css',
+                filename: state.isChromeMode
+                    ? 'styles/[name].css'
+                    : 'styles/[name].[contenthash].css',
             })
         )
     }
