@@ -1,3 +1,12 @@
+## [1.4.2](https://github.com/divlook/ticketing-timer/compare/v1.4.1...v1.4.2) (2020-11-08)
+
+
+### Bug Fixes
+
+* :bug: fix manifest ([397ae6a](https://github.com/divlook/ticketing-timer/commit/397ae6a1a4365809017e32205321ee1a34c85629))
+
+
+
 ## [1.4.1](https://github.com/divlook/ticketing-timer/compare/v1.4.0...v1.4.1) (2020-09-10)
 
 
@@ -45,15 +54,6 @@
 ### Bug Fixes
 
 * Create Pages 액션 테스트 ([072e06e](https://github.com/divlook/ticketing-timer/commit/072e06ef690e69828b8a3dcc125904d7f27a67d1))
-
-
-
-# [1.2.0](https://github.com/divlook/ticketing-timer/compare/v1.1.0...v1.2.0) (2020-09-03)
-
-
-### Features
-
-* :rocket: build할 때 index.html 생성 ([c1dbbe0](https://github.com/divlook/ticketing-timer/commit/c1dbbe0d6acfcddcbdaeb36849ac72c76db6d51e))
 
 
 
