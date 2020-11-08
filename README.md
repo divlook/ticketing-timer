@@ -25,7 +25,7 @@ KTX 또는 SRT의 홈페이지에 접속 후 타이머를 실행하면, 예약�
 
 Chrome 브라우저의 확장 앱입니다. 아직 미완성이라 사용이 불편하실 수 있습니다.
 
-앱 버전 v1.4.1 이상을 사용하셔야 됩니다. 이전 버전은 정상적으로 동작하지 않습니다.
+앱 버전 v1.4.2 이상을 사용하셔야 됩니다. 이전 버전은 정상적으로 동작하지 않습니다.
 
 - 설치 : [Chrome 웹 스토어](https://chrome.google.com/webstore/detail/ticketing-timer/aglloefolpfdegbjigcdabgjonfdcmlh)에서 `Chrome에 추가` 버튼을 클릭합니다.
 - 티켓팅할 사이트에 접속합니다.
