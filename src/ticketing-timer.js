@@ -74,8 +74,6 @@ class TicketingTimer {
      * @param {TicketingType} type
      */
     checkHostname(type) {
-        // ENV_MODE === 'chrome'
-        // TODO: chrome에서 url 정보를 가져와야 함.
         if (type === 'ktx' && location.hostname !== 'www.letskorail.com') {
             this.log('www.letskorail.com 에서만 사용할 수 있습니다.')
             return false
