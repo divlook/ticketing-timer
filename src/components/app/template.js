@@ -22,7 +22,7 @@ function template() {
                         </p>
 
                         <div class="tta-editor-container">
-                            <textarea rows="10" data-id="editor"></textarea>
+                            <textarea rows="10" data-id="editor" placeholder="여기에 코드를 입력해주세요."></textarea>
                             <code data-id="editor-preview" class="hljs javascript"></code>
                         </div>
 
