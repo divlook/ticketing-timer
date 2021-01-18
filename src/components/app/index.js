@@ -262,6 +262,7 @@ async function App(props = {}) {
         const isCustom = e.target.value === 'custom'
 
         editor.textarea.disabled = !isCustom
+        editor.textarea.parentElement.style.display = !isCustom ? 'none' : null
     }
 
     function onTypingEditor(e) {

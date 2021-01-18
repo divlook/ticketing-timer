@@ -5,40 +5,27 @@
  * @see https://developer.chrome.com/extensions/content_scripts
  */
 
-import App from '@/components/app'
-import { getBestZIndexAmongChild } from '@/utils/dom'
+injectScript(chrome.extension.getURL('chrome/inject.js'), 'body')
 
-window.addEventListener('load', init)
-
-async function init() {
-    const bestZIndex = await getBestZIndexAmongChild(document.body)
-    const app = await App({ mode: 'modal', zIndex: bestZIndex + 1 })
-
-    document.body.appendChild(app.el)
-
-    useChromeMessageListener(() => {
-        if (app.state.show) {
-            app.methods.hide()
-        } else {
-            app.methods.show()
-        }
+chrome.runtime.onMessage.addListener((request) => {
+    window.postMessage({
+        type: 'ticketing-timer',
+        request,
     })
-}
+})
 
 /**
- * @see https://developer.chrome.com/extensions/messaging
- * @param { () => void } callback
+ * injectScript - Inject internal script to available access to the `window`
+ *
+ * @param  {type} file_path Local path of the internal script.
+ * @param  {type} tag The tag as string, where the script will be append (default: 'body').
+ * @see    {@link https://gist.github.com/devjin0617/3e8d72d94c1b9e69690717a219644c7a}
+ * @see    {@link http://stackoverflow.com/questions/20499994/access-window-variable-from-content-script}
  */
-function useChromeMessageListener(callback) {
-    if (typeof chrome === 'undefined') {
-        return false
-    }
-
-    chrome.runtime.onMessage.addListener((request) => {
-        if (request?.action === 'toggle') {
-            callback()
-        }
-    })
-
-    return true
+function injectScript(file_path, tag) {
+    var node = document.getElementsByTagName(tag)[0]
+    var script = document.createElement('script')
+    script.setAttribute('type', 'text/javascript')
+    script.setAttribute('src', file_path)
+    node.appendChild(script)
 }

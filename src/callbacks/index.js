@@ -1,4 +1,7 @@
-import ktx from '@/callbacks/ktx.js'
+import ktx from '@/callbacks/ktx'
+import srt from '@/callbacks/srt'
 
-export * as ktx from '@/callbacks/ktx'
-export * as srt from '@/callbacks/srt'
+export {
+    ktx,
+    srt,
+}
