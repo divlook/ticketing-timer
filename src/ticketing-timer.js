@@ -134,7 +134,7 @@ class TicketingTimer {
 
         Object.keys(callbacks).forEach((key) => {
             this.#callbackMap.set(key, () => {
-                const errMsg = callbacks[key]
+                const errMsg = callbacks[key]?.()
 
                 if (errMsg) {
                     this.log(errMsg)
