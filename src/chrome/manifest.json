@@ -12,10 +12,11 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "css": ["styles/chrome/content-script.css"],
+            "css": ["styles/chrome/inject.css"],
             "js": ["chrome/content-script.js"]
         }
     ],
+    "web_accessible_resources": ["chrome/inject.js"],
     "background": {
         "scripts": ["chrome/background.js"],
         "persistent": false
