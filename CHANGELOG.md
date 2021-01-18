@@ -1,3 +1,13 @@
+## [1.4.3](https://github.com/divlook/ticketing-timer/compare/v1.4.2...v1.4.3) (2021-01-18)
+
+
+### Bug Fixes
+
+* :bug: Chrome Content Script 버그 수정 ([4ed666b](https://github.com/divlook/ticketing-timer/commit/4ed666b86a370949dd59b5d3c331903869a7257b))
+* 🐛 함수가 실행되지 않던 버그를 수정하였습다. ([6b6f929](https://github.com/divlook/ticketing-timer/commit/6b6f929791687e3a2dbd551f54c2aaa5e8180235))
+
+
+
 ## [1.4.2](https://github.com/divlook/ticketing-timer/compare/v1.4.1...v1.4.2) (2020-11-08)
 
 
@@ -45,15 +55,6 @@
 * :sparkles: 에디터 기능 초안 완성 ([6b474bd](https://github.com/divlook/ticketing-timer/commit/6b474bd32a7ec4d8133cbd2ebe5cbe6d5a1206ef))
 * :sparkles: 이벤트 옵션 추가 ([f7a28de](https://github.com/divlook/ticketing-timer/commit/f7a28dec1cc76f46c2e957eaddb4f9a6a20fef74))
 * input에 초기값 추가 ([9225129](https://github.com/divlook/ticketing-timer/commit/922512993bebd3da46bad5d556c041b1afeba47a))
-
-
-
-## [1.2.1](https://github.com/divlook/ticketing-timer/compare/v1.2.0...v1.2.1) (2020-09-03)
-
-
-### Bug Fixes
-
-* Create Pages 액션 테스트 ([072e06e](https://github.com/divlook/ticketing-timer/commit/072e06ef690e69828b8a3dcc125904d7f27a67d1))
 
 
 

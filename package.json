@@ -1,6 +1,6 @@
 {
   "name": "@divlook/ticketing-timer",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "티켓팅(KTX, SRT, 기타)을 위한 크롬 확장 앱입니다.",
   "keywords": [
     "ticketing",
