@@ -10,7 +10,7 @@ function template() {
                     <form>
                         <p class="tta-input-container">
                             <input type="date" data-id="date">
-                            <input type="time" data-id="time" step="1">
+                            <input type="time" data-id="time" step="0.001">
                         </p>
 
                         <p>
