@@ -192,7 +192,7 @@ class TicketingTimer {
     }
     log(...msgs) {
         this.emitLogging(...msgs)
-        this.#log(...msgs)
+        // this.#log(...msgs)
     }
 
     emitInit() {
