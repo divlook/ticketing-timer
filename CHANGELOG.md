@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/divlook/ticketing-timer/compare/v1.5.0...v1.5.1) (2021-03-07)
+
+
+### Bug Fixes
+
+* :bug: 키보드 입력시 focus를 뺏기지 않게 수정 ([989079e](https://github.com/divlook/ticketing-timer/commit/989079ed44f0252d22b3ca77c920e306c159af25)), closes [#3](https://github.com/divlook/ticketing-timer/issues/3)
+
+
+
 # [1.5.0](https://github.com/divlook/ticketing-timer/compare/v1.4.3...v1.5.0) (2021-01-19)
 
 
@@ -33,19 +42,6 @@
 
 * :bug: Auto Release할 때 커밋 옵션 수정 ([be13e66](https://github.com/divlook/ticketing-timer/commit/be13e666a72d886db6a530fd7330483adedad682))
 * :wrench: chrome 권한 수정 ([dfdc84a](https://github.com/divlook/ticketing-timer/commit/dfdc84af4e3394de71ccb48514ce8384b4c4fd82))
-
-
-
-# [1.4.0](https://github.com/divlook/ticketing-timer/compare/v1.3.0...v1.4.0) (2020-09-10)
-
-
-### Features
-
-* :art: chrom 확장 앱을 위한 작업 ([8df20f6](https://github.com/divlook/ticketing-timer/commit/8df20f610dcba538e2c1ca21e55751e7101e4de5))
-* :lipstick: modal css 추가 ([390a002](https://github.com/divlook/ticketing-timer/commit/390a0021de7e88fdd3630f59e656e2a87b8da46e))
-* :sparkles: chrome에서 아이콘을 클릭해서 타이머 실행 ([40ff09d](https://github.com/divlook/ticketing-timer/commit/40ff09d87c4bba2f33d1e71b6d16014b83887cd9))
-* :sparkles: modal 기능 구현 ([ad52be8](https://github.com/divlook/ticketing-timer/commit/ad52be849960e0025cf9613e13c2d8825cdce461))
-* :sparkles: 구조 대격변 ([41f779c](https://github.com/divlook/ticketing-timer/commit/41f779c3d7ef714584bdb40816756d9ca4caa9b5))
 
 
 
