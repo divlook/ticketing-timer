@@ -266,6 +266,8 @@ async function App(props = {}) {
     }
 
     function onTypingEditor(e) {
+        e.stopPropagation()
+
         codeHighlight(editor.preview, e.target.value)
     }
 
@@ -278,6 +280,8 @@ async function App(props = {}) {
 
     function onTappingEditor(e) {
         const shiftKey = e.shiftKey
+
+        e.stopPropagation()
 
         if (e.key === 'Tab') {
             e.preventDefault()
