@@ -52,6 +52,10 @@ export function getBestZIndexAmongChild(el) {
     let bestZIndex = 0
 
     children.forEach((child) => {
+        if (child.classList.contains('ticketing-timer-app')) {
+            return
+        }
+
         const _child = parseElement(child)
         const zIndex = parseInt(_child.style.zIndex)
 

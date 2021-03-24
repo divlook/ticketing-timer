@@ -7,14 +7,23 @@ window.addEventListener('load', init)
 async function init() {
     const bestZIndex = await getBestZIndexAmongChild(document.body)
     const app = await App({ mode: 'modal', zIndex: bestZIndex + 1 })
-
-    document.body.appendChild(app.el)
+    const state = {
+        isMounted: false,
+    }
 
     useChromeMessageListener(() => {
+        if (!state.isMounted) {
+            state.isMounted = true
+            document.body.appendChild(app.el)
+        }
+
         if (app.state.show) {
             app.methods.hide()
         } else {
             app.methods.show()
+            getBestZIndexAmongChild(document.body).then((bestZIndex) => {
+                app.methods.setZIndex(bestZIndex + 1)
+            })
         }
     })
 }

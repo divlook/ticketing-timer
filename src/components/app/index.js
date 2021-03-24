@@ -131,6 +131,7 @@ async function App(props = {}) {
         methods: {
             show,
             hide,
+            setZIndex,
         },
     }
 
@@ -368,6 +369,16 @@ async function App(props = {}) {
                 onModalHidden()
             }
         }, state.modalAnimationDuration + 100)
+    }
+
+    /**
+     * mode가 modal일 때 사용 가능
+     */
+    function setZIndex(zIndex = 1) {
+        if (state.isModalMode && typeof zIndex === 'number') {
+            state.zIndex = zIndex
+            el.style.zIndex = state.zIndex
+        }
     }
 
     function setClasses(className = null, isAdd = false) {
