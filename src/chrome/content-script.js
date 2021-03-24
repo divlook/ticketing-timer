@@ -1,3 +1,5 @@
+import { messageType } from '@/chrome/constant'
+
 /**
  * Chrome Content Script
  *
@@ -9,7 +11,7 @@ injectScript(chrome.extension.getURL('chrome/inject.js'), 'body')
 
 chrome.runtime.onMessage.addListener((request) => {
     window.postMessage({
-        type: 'ticketing-timer',
+        type: messageType,
         request,
     })
 })
