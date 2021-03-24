@@ -1,3 +1,13 @@
+# [1.6.0](https://github.com/divlook/ticketing-timer/compare/v1.5.1...v1.6.0) (2021-03-24)
+
+
+### Features
+
+* :recycle: messageType이 변경되었습니다 ([1ff0c57](https://github.com/divlook/ticketing-timer/commit/1ff0c5715d7db45ec4dd60daac7dff5931701ef4))
+* :recycle: 페이지 액션 실행시 로직이 개선되었습니다. ([c6d29ec](https://github.com/divlook/ticketing-timer/commit/c6d29ec28a2af151e3913416847ac779496274eb)), closes [#7](https://github.com/divlook/ticketing-timer/issues/7)
+
+
+
 ## [1.5.1](https://github.com/divlook/ticketing-timer/compare/v1.5.0...v1.5.1) (2021-03-07)
 
 
@@ -32,16 +42,6 @@
 ### Bug Fixes
 
 * :bug: fix manifest ([397ae6a](https://github.com/divlook/ticketing-timer/commit/397ae6a1a4365809017e32205321ee1a34c85629))
-
-
-
-## [1.4.1](https://github.com/divlook/ticketing-timer/compare/v1.4.0...v1.4.1) (2020-09-10)
-
-
-### Bug Fixes
-
-* :bug: Auto Release할 때 커밋 옵션 수정 ([be13e66](https://github.com/divlook/ticketing-timer/commit/be13e666a72d886db6a530fd7330483adedad682))
-* :wrench: chrome 권한 수정 ([dfdc84a](https://github.com/divlook/ticketing-timer/commit/dfdc84af4e3394de71ccb48514ce8384b4c4fd82))
 
 
 
