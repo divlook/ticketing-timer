@@ -63,11 +63,11 @@ const options = {
     envMode: setEnvMode(),
 }
 
-module.exports = function (env, argv) {
-    options.title = isNullish(argv['title'], options.title)
-    options.outputPath = isNullish(argv['output-path'])
-    options.publicPath = isNullish(argv['public-path'])
-    options.envMode = setEnvMode(argv['env-mode'])
+module.exports = function (env) {
+    options.title = isNullish(env['title'], options.title)
+    options.outputPath = isNullish(env['output-path'])
+    options.publicPath = isNullish(env['public-path'])
+    options.envMode = setEnvMode(env['env-mode'])
     state.isChromeMode = options.envMode === 'chrome'
 
     config.plugins.push(new ProgressPlugin())
@@ -101,6 +101,18 @@ function devConfig() {
     useEntry()
     useDevServer()
     useCssLoader(true)
+
+    config.module.rules.push({
+        test: /\.ejs$/,
+        use: [
+            {
+                loader: 'ejs-loader',
+                options: {
+                esModule: false,
+                },
+            },
+        ],
+    })
 
     return config
 }
@@ -220,7 +232,9 @@ function useCopyPlugin() {
 
 function useDevServer() {
     config.devServer = {
-        contentBase: [rootDir('public')],
+        static: {
+            directory: rootDir('public'),
+        },
         port: 9000,
         host: '0.0.0.0',
         hot: true,
