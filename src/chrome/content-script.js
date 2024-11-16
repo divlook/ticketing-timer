@@ -1,13 +1,8 @@
 import { messageType } from '@/chrome/constant'
+import App from '@/components/app'
+import { getBestZIndexAmongChild } from '@/utils/dom'
 
-/**
- * Chrome Content Script
- *
- * @see https://developer.chrome.com/extensions/devguide
- * @see https://developer.chrome.com/extensions/content_scripts
- */
-
-injectScript(chrome.extension.getURL('chrome/inject.js'), 'body')
+init()
 
 chrome.runtime.onMessage.addListener((request) => {
     window.postMessage({
@@ -16,18 +11,44 @@ chrome.runtime.onMessage.addListener((request) => {
     })
 })
 
-/**
- * injectScript - Inject internal script to available access to the `window`
- *
- * @param  {type} file_path Local path of the internal script.
- * @param  {type} tag The tag as string, where the script will be append (default: 'body').
- * @see    {@link https://gist.github.com/devjin0617/3e8d72d94c1b9e69690717a219644c7a}
- * @see    {@link http://stackoverflow.com/questions/20499994/access-window-variable-from-content-script}
- */
-function injectScript(file_path, tag) {
-    var node = document.getElementsByTagName(tag)[0]
-    var script = document.createElement('script')
-    script.setAttribute('type', 'text/javascript')
-    script.setAttribute('src', file_path)
-    node.appendChild(script)
+async function init() {
+    const rootEl = document.createElement('div')
+    const shadowRoot = rootEl.attachShadow({ mode: 'open' })
+    const styleLink = document.createElement('link')
+
+    rootEl.dataset.name = messageType
+    styleLink.setAttribute('rel', 'stylesheet')
+    styleLink.setAttribute('href', chrome.runtime.getURL('styles/chrome/content-script.css'))
+    shadowRoot.appendChild(styleLink)
+    document.body.appendChild(rootEl)
+
+    const app = await App({ mode: 'modal' })
+    const state = {
+        isMounted: false,
+    }
+
+    window.addEventListener('message', (e) => {
+        const data = e.data
+
+        if (data.type !== messageType) {
+            return
+        }
+
+        if (data.request?.action === 'toggle') {
+            if (!state.isMounted) {
+                state.isMounted = true
+
+                shadowRoot.appendChild(app.el)
+            }
+
+            if (app.state.show) {
+                app.methods.hide()
+            } else {
+                app.methods.show()
+                getBestZIndexAmongChild(document.body).then((bestZIndex) => {
+                    app.methods.setZIndex(bestZIndex + 1)
+                })
+            }
+        }
+    })
 }
