@@ -13,7 +13,6 @@ import {
 } from '@/components/app/dom'
 import template from '@/components/app/template'
 import { codeHighlight } from '@/plugins/highlight'
-import { createCode } from '@/utils'
 import { renderTemplate, createArticle } from '@/utils/dom'
 import {
     onSubmit,
@@ -26,6 +25,7 @@ import {
     onAnimationend,
 } from '@/utils/dom.event'
 import { indentLine, outdentLine } from '@/utils/dom.textarea'
+import * as callbacks from '@/callbacks'
 
 /**
  * @typedef State
@@ -121,6 +121,10 @@ async function App(props = {}) {
     initApp()
     setInitialValue()
 
+    requestAnimationFrame(() => {
+        updatePreviewCode(select.ticketingType.value)
+    })
+
     return {
         get el() {
             return el
@@ -139,8 +143,6 @@ async function App(props = {}) {
         consoleSection.clear()
 
         const ticketingType = select.ticketingType.value
-        const isCustom = ticketingType === 'custom'
-        const typeOrCallback = isCustom ? completeTicketing : ticketingType
 
         if (!input.date.value) {
             consoleSection.add(createArticle('날짜를 입력해주세요.'))
@@ -154,7 +156,7 @@ async function App(props = {}) {
 
         const datetime = [input.date.value, ' ', input.time.value].join('')
 
-        timer = new TicketingTimer(typeOrCallback, {
+        timer = new TicketingTimer(ticketingType, {
             onReject,
             onStart,
             onStop,
@@ -166,10 +168,6 @@ async function App(props = {}) {
 
     function stopTicketing() {
         timer?.stop()
-    }
-
-    function completeTicketing() {
-        consoleSection.add(createArticle('타이머가 종료되었습니다.'))
     }
 
     function resetTicketing(e) {
@@ -190,24 +188,6 @@ async function App(props = {}) {
      */
     function setPlaying(playing) {
         state.playing = !!playing
-        editor.textarea.disabled = state.playing
-
-        if (editor.textarea.value && state.playing) {
-            try {
-                runCode = createCode(editor.textarea.value)
-                return
-            } catch (error) {
-                console.error(error)
-                consoleSection.clear()
-                consoleSection.add(createArticle('에러가 발생하였습니다.'))
-                createArticle(error?.message, (article) => {
-                    consoleSection.add(article)
-                })
-                stopTicketing()
-            }
-        }
-
-        runCode = null
     }
 
     function onReject() {
@@ -260,10 +240,7 @@ async function App(props = {}) {
     }
 
     function onTypeChanged(e) {
-        const isCustom = e.target.value === 'custom'
-
-        editor.textarea.disabled = !isCustom
-        editor.textarea.parentElement.style.display = !isCustom ? 'none' : null
+        updatePreviewCode(e.target.value)
     }
 
     function onTypingEditor(e) {
@@ -389,6 +366,22 @@ async function App(props = {}) {
         } else {
             el.classList.remove(className)
         }
+    }
+
+    /**
+     * @param {'ktx' | 'srt'} ticketingType
+     */
+    function updatePreviewCode(ticketingType) {
+        const code = (() => {
+            try {
+                return callbacks[ticketingType].toString()
+            } catch {
+                return ''
+            }
+        })()
+
+        editor.textarea.value = code
+        codeHighlight(editor.preview, code)
     }
 }
 

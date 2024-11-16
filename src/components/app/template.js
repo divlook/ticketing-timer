@@ -15,14 +15,13 @@ function template() {
 
                         <p>
                             <select data-id="ticketing-type">
-                                <option value="custom">Custom</option>
                                 <option value="ktx">KTX</option>
                                 <option value="srt">SRT</option>
                             </select>
                         </p>
 
                         <div class="tta-editor-container">
-                            <textarea rows="10" data-id="editor" placeholder="여기에 코드를 입력해주세요."></textarea>
+                            <textarea rows="10" data-id="editor" readonly></textarea>
                             <code data-id="editor-preview" class="hljs javascript"></code>
                         </div>
 
