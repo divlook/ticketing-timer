@@ -1,5 +1,6 @@
 {
-    "manifest_version": 2,
+    "$schema": "https://json.schemastore.org/chrome-manifest",
+    "manifest_version": 3,
     "name": "Ticketing Timer",
     "version": "1.0.0",
     "description": "티켓팅을 위한 앱입니다.",
@@ -12,16 +13,19 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "css": ["styles/chrome/inject.css"],
             "js": ["chrome/content-script.js"]
         }
     ],
-    "web_accessible_resources": ["chrome/inject.js"],
+    "web_accessible_resources": [
+        {
+            "resources": ["styles/*"],
+            "matches": ["<all_urls>"]
+        }
+    ],
     "background": {
-        "scripts": ["chrome/background.js"],
-        "persistent": false
+        "service_worker": "chrome/background.js"
     },
-    "browser_action": {
+    "action": {
         "default_title": "클릭하면 타이머가 나타납니다."
     }
 }

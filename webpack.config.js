@@ -150,7 +150,6 @@ function useEntry() {
         config.entry = {
             'chrome/background': rootDir('src/chrome/background.js'),
             'chrome/content-script': rootDir('src/chrome/content-script.js'),
-            'chrome/inject': rootDir('src/chrome/inject.js'),
             'plugins/highlight.module': '@/plugins/highlight.module',
         }
         return

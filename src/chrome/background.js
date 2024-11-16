@@ -4,7 +4,7 @@
  * @see https://developer.chrome.com/extensions/background_pages
  */
 
-chrome.browserAction.onClicked.addListener(onClickBrowserAction)
+chrome.action.onClicked.addListener(onClickBrowserAction)
 
 /**
  * @param { tabs.Tab } tab https://developer.chrome.com/extensions/tabs#type-Tab
