@@ -8,12 +8,15 @@ on:
       - 'dist/**'
   pull_request:
     branches: [main]
+    types:
+      - closed
     paths-ignore:
       - '**/*.md'
       - 'dist/**'
 
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +38,7 @@ jobs:
         run: yarn build.github
 
       - name: Git Auto Commit
-        uses: stefanzweifel/git-auto-commit-action@v4.4.1
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'build: dist'
           file_pattern: dist/*
@@ -51,7 +54,7 @@ jobs:
 
       - name: Conventional Changelog Action
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v3
+        uses: TriPSs/conventional-changelog-action@v5
         with:
           github-token: ${{ secrets.github_token }}
           git-user-name: divlook
