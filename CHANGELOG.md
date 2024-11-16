@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/divlook/ticketing-timer/compare/v1.6.0...v2.0.0) (2024-11-16)
+
+
+### Features
+
+* auto-release 워크플로우 업데이트 및 GitHub Actions 의존성 버전 변경 ([77a0e4f](https://github.com/divlook/ticketing-timer/commit/77a0e4f1dbf5917fa3cd5d5bfafb859f4fb0c81e))
+* auto-release 워크플로우에서 푸시 이벤트 지원 추가 ([5694143](https://github.com/divlook/ticketing-timer/commit/5694143f3b477095ded0289e52cac9a89be20405))
+
+
+
 # [1.6.0](https://github.com/divlook/ticketing-timer/compare/v1.5.1...v1.6.0) (2021-03-24)
 
 
@@ -33,15 +43,6 @@
 
 * :bug: Chrome Content Script 버그 수정 ([4ed666b](https://github.com/divlook/ticketing-timer/commit/4ed666b86a370949dd59b5d3c331903869a7257b))
 * 🐛 함수가 실행되지 않던 버그를 수정하였습다. ([6b6f929](https://github.com/divlook/ticketing-timer/commit/6b6f929791687e3a2dbd551f54c2aaa5e8180235))
-
-
-
-## [1.4.2](https://github.com/divlook/ticketing-timer/compare/v1.4.1...v1.4.2) (2020-11-08)
-
-
-### Bug Fixes
-
-* :bug: fix manifest ([397ae6a](https://github.com/divlook/ticketing-timer/commit/397ae6a1a4365809017e32205321ee1a34c85629))
 
 
 
